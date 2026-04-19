@@ -855,8 +855,8 @@ def initiate_call_report():
 
         user_phone = normalize_phone(user.phone)
 
-print("USER PHONE FROM PROFILE:", user.phone)
-print("NORMALIZED USER PHONE:", user_phone)
+        print("USER PHONE FROM PROFILE:", user.phone)
+        print("NORMALIZED USER PHONE:", user_phone)
 
         if not user_phone:
             return jsonify({"error": "رقم الهاتف غير صالح. يرجى تحديثه بصيغة دولية."}), 400
@@ -879,7 +879,6 @@ print("NORMALIZED USER PHONE:", user_phone)
         if not twilio_client:
             return jsonify({"error": "خدمة المكالمات غير متاحة حالياً (Twilio غير مهيأ)"}), 500
 
-        # Build the webhook URL. Use PUBLIC_BASE_URL if set, otherwise rely on request url_root
         base_url = PUBLIC_BASE_URL if PUBLIC_BASE_URL else request.url_root.rstrip("/")
         webhook_url = f"{base_url}/voice-incoming?report_id={call_report.id}"
 
@@ -902,7 +901,6 @@ print("NORMALIZED USER PHONE:", user_phone)
         print(f"Error in initiate_call_report: {e}")
         print(traceback.format_exc())
         return jsonify({"error": f"حدث خطأ: {str(e)}"}), 500
-
 
 @app.route("/voice-incoming", methods=["GET", "POST"])
 def voice_incoming():
