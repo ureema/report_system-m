@@ -63,7 +63,7 @@ def normalize_phone(phone: str) -> str:
         return ""  # رقم غير معروف
 
     return f"+{digits}"
-    
+
 # ------------------------------
 # App Configuration
 # ------------------------------
@@ -854,6 +854,10 @@ def initiate_call_report():
             return jsonify({"error": "رقم الهاتف غير موجود. يرجى إضافته في الملف الشخصي."}), 400
 
         user_phone = normalize_phone(user.phone)
+
+print("USER PHONE FROM PROFILE:", user.phone)
+print("NORMALIZED USER PHONE:", user_phone)
+
         if not user_phone:
             return jsonify({"error": "رقم الهاتف غير صالح. يرجى تحديثه بصيغة دولية."}), 400
 
