@@ -1,0 +1,238 @@
+/* ===== SUPPORT ADMIN CLEAN FINAL ===== */
+
+.support-admin-page {
+    width: 92%;
+    max-width: 950px;
+    margin: 40px auto;
+}
+
+/* الكرت الرئيسي */
+.support-admin-card {
+    background: var(--card-bg);
+    border-radius: 20px;
+    padding: 28px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    border: 1px solid var(--border);
+}
+
+/* الهيدر */
+.support-admin-header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.support-admin-header i {
+    font-size: 32px;
+    color: var(--primary);
+    margin-bottom: 10px;
+}
+
+.support-admin-header h1 {
+    color: var(--primary);
+    font-size: 24px;
+    margin-bottom: 6px;
+}
+
+.support-admin-header p {
+    color: var(--text-soft);
+    font-size: 14px;
+}
+
+/* الرسائل */
+.messages {
+    margin-bottom: 15px;
+}
+
+.message {
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 8px;
+}
+
+.message.success {
+    background: #e8f5e9;
+    color: #2f855a;
+}
+
+.message.error {
+    background: #fff3f3;
+    color: #c53030;
+}
+
+/* الشبكة */
+.support-messages-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+}
+
+/* الكرت لكل رسالة */
+.support-message-card {
+    background: var(--bg-soft);
+    border-radius: 14px;
+    padding: 16px;
+    border: 1px solid var(--border);
+    border-right: 4px solid var(--primary);
+    transition: 0.25s;
+}
+
+.support-message-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 18px rgba(0,0,0,0.08);
+}
+
+/* أعلى الكرت */
+.support-top {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.support-id {
+    font-weight: bold;
+    color: var(--primary);
+}
+
+.support-status {
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-weight: bold;
+}
+
+/* الحالات */
+.support-status.new {
+    background: #e3f2fd;
+    color: #1565c0;
+}
+
+.support-status.replied {
+    background: #fff3e0;
+    color: #e65100;
+}
+
+.support-status.closed {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+/* محتوى الرسالة */
+.support-body p {
+    margin-bottom: 6px;
+    color: var(--text-soft);
+    font-size: 14px;
+}
+
+/* رد الأدمن */
+.admin-reply-box {
+    background: #f1fdf4;
+    border-right: 4px solid var(--primary);
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 10px;
+    font-size: 13px;
+}
+
+/* الفورم */
+.reply-form {
+    margin-top: 10px;
+}
+
+.reply-form textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--card-bg);
+    color: var(--text-main);
+    margin-bottom: 8px;
+    resize: none;
+}
+
+/* الأزرار */
+.btn {
+    padding: 7px 12px;
+    border-radius: 7px;
+    font-size: 12px;
+    font-weight: bold;
+    text-decoration: none;
+    display: inline-block;
+}
+
+/* زر الرد */
+button.btn.replied {
+    background: #2e7d32;
+    color: white;
+}
+
+button.btn.replied:hover {
+    background: #1b5e20;
+}
+
+/* أزرار الحالات */
+a.btn.new-btn {
+    background: #3182ce;
+    color: white;
+}
+
+a.btn.replied {
+    background: #41d57f;
+    color: white;
+}
+
+a.btn.closed {
+    background: #ecc94b;
+    color: #1f2937;
+}
+
+a.btn.delete {
+    background: #e53e3e;
+    color: white;
+}
+
+/* ترتيب الأزرار */
+.support-actions {
+    margin-top: 10px;
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+/* ===== EMPTY BOX (المهم 🔥) ===== */
+.empty-box {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-soft);
+    background: var(--bg-soft);
+    border: 1px dashed var(--border);
+    border-radius: 16px;
+    max-width: 420px;
+    margin: 25px auto 0;
+}
+
+.empty-box i {
+    font-size: 36px;
+    margin-bottom: 10px;
+    color: var(--primary);
+    display: block;
+}
+
+.empty-box p {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+/* ===== DARK MODE ===== */
+html[data-theme="dark"] .admin-reply-box {
+    background: #1b2a1f;
+    color: #ffffff;
+    border-right: 4px solid #4ade80;
+}
+
+/* موبايل */
+@media (max-width: 768px) {
+    .support-admin-page {
+        width: 95%;
+    }
+}

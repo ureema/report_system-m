@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}من نحن - أبلغ{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='style_about.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="about-wrapper">
+
+    <div class="about-hero">
+        <h1>من نحن</h1>
+        <p>منصة أبلغ — بوابتك الموحدة لإيصال صوتك للجهات المختصة</p>
+    </div>
+
+    <div class="about-section">
+        <h2>منصة أبلغ</h2>
+        <p>
+            منصة رقمية تهدف إلى تسهيل عملية تقديم البلاغات والشكاوى،
+            من خلال قناة موحدة تستقبل البلاغات وتوجّهها تلقائيًا إلى الجهة المختصة.
+        </p>
+    </div>
+
+    <div class="about-section">
+        <h2>الخدمات</h2>
+        <ul class="about-list">
+            <li>استقبال البلاغات</li>
+            <li>تصنيف البلاغ تلقائيًا</li>
+            <li>توجيه البلاغ للجهة المختصة</li>
+            <li>متابعة حالة البلاغ</li>
+        </ul>
+    </div>
+
+    <div class="about-section">
+       <h2>الجهات</h2>
+        <div class="tags-row">
+            <span class="tag">بلدية</span>
+            <span class="tag">كهرباء</span>
+            <span class="tag">مياه</span>
+            <span class="tag">طرق وجسور</span>
+            <span class="tag">صحة</span>
+            <span class="tag">تعليم</span>
+            <span class="tag">بيئة ونظافة</span>
+            <span class="tag">إنارة عامة</span>
+            <span class="tag">اتصالات</span>
+            <span class="tag">إسكان</span>
+             <span class="tag">تجارة</span>
+             <span class="tag">  أمن وسلامه</span>
+
+        </div>
+    </div>
+
+</div>
+{% endblock %}

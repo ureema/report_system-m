@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block title %}ملفي الشخصي{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='style_settings.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="settings-page">
+    <div class="settings-card">
+
+        <div class="settings-header">
+            <div class="profile-preview">
+                {% if user.avatar %}
+                    <img src="{{ url_for('static', filename=user.avatar) }}" alt="avatar" class="avatar-preview">
+                {% else %}
+                    <div class="avatar-placeholder">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+                {% endif %}
+            </div>
+
+            <h1>ملفي الشخصي</h1>
+            <p>يمكنك تعديل بياناتك الشخصية والصورة الشخصية من هنا.</p>
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            <div class="messages">
+              {% for category, message in messages %}
+                <div class="message {{ 'success' if category == 'success' else 'error' }}">
+                  {{ message }}
+                </div>
+              {% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
+
+        <form action="{{ url_for('update_profile') }}" method="POST" enctype="multipart/form-data" class="settings-form">
+
+            <div class="section-title">
+                <i class="fa-solid fa-id-card"></i>
+                البيانات الشخصية
+            </div>
+
+            <div class="form-group">
+                <label><i class="fa-solid fa-image"></i> الصورة الشخصية</label>
+                <input type="file" name="avatar" accept="image/*">
+            </div>
+
+            <div class="form-group">
+                <label><i class="fa-solid fa-user"></i> الاسم الكامل</label>
+                <input type="text" name="name" value="{{ user.name or '' }}" required>
+            </div>
+
+            <div class="form-group">
+                <label><i class="fa-solid fa-envelope"></i> البريد الإلكتروني</label>
+                <input type="email" name="email" value="{{ user.email or '' }}" required>
+            </div>
+
+            <div class="form-group">
+                <label><i class="fa-solid fa-phone"></i> رقم الجوال</label>
+                <input type="text" name="phone" value="{{ user.phone or '' }}">
+            </div>
+
+            <div class="buttons">
+                <button type="submit" class="save-btn">حفظ البيانات</button>
+                <a href="{{ url_for('home') }}" class="back-btn">العودة للرئيسية</a>
+            </div>
+
+        </form>
+    </div>
+</div>
+{% endblock %}

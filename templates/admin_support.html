@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block title %}رسائل الدعم{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='style_support_admin.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="support-admin-page">
+    <div class="support-admin-card">
+
+        <div class="support-admin-header">
+            <i class="fa-solid fa-headset"></i>
+            <h1>رسائل الدعم والتواصل</h1>
+            <p>يمكنك من هنا استعراض جميع الرسائل الواردة من المستخدمين والرد عليها.</p>
+        </div>
+
+        {% with messages_flash = get_flashed_messages(with_categories=true) %}
+          {% if messages_flash %}
+            <div class="messages">
+              {% for category, message in messages_flash %}
+                <div class="message {{ 'success' if category == 'success' else 'error' }}">
+                  {{ message }}
+                </div>
+              {% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
+
+        {% if messages %}
+        <div class="support-messages-grid">
+            {% for msg in messages %}
+            <div class="support-message-card">
+
+                <div class="support-top">
+                    <span class="support-id">رسالة #{{ msg.id }}</span>
+
+                    <span class="support-status {% if msg.status == 'جديدة' %}new{% elif msg.status == 'تم الرد' %}replied{% else %}closed{% endif %}">
+                        {{ msg.status }}
+                    </span>
+                </div>
+
+                <div class="support-body">
+                    <p><strong>الاسم:</strong> {{ msg.name }}</p>
+                    <p><strong>البريد:</strong> {{ msg.email }}</p>
+                    <p><strong>النوع:</strong> {{ msg.issue_type }}</p>
+                    <p><strong>الرسالة:</strong> {{ msg.message }}</p>
+
+                    {% if msg.reply %}
+                    <div class="admin-reply-box">
+                        <strong>رد الدعم:</strong>
+                        <p>{{ msg.reply }}</p>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <form action="{{ url_for('reply_support', id=msg.id) }}" method="POST" class="reply-form">
+                    <textarea name="reply" placeholder="اكتب الرد هنا..." required>{{ msg.reply or '' }}</textarea>
+                    <button type="submit" class="btn replied">حفظ الرد</button>
+                </form>
+
+                <div class="support-actions">
+                    <a href="{{ url_for('update_support_status', id=msg.id, new_status='new') }}" class="btn new-btn">جديدة</a>
+                    <a href="{{ url_for('update_support_status', id=msg.id, new_status='replied') }}" class="btn replied">تم الرد</a>
+                    <a href="{{ url_for('update_support_status', id=msg.id, new_status='closed') }}" class="btn closed">إغلاق</a>
+                    <a href="{{ url_for('delete_support', id=msg.id) }}" class="btn delete"
+                       onclick="return confirm('هل أنت متأكد من حذف الرسالة؟')">حذف</a>
+                </div>
+
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-box">
+            <i class="fa-solid fa-inbox"></i>
+            <p>لا توجد رسائل دعم حالياً.</p>
+        </div>
+        {% endif %}
+
+    </div>
+</div>
+{% endblock %}

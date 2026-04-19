@@ -1,0 +1,146 @@
+{% extends "base.html" %}
+
+{% block title %}تسجيل الدخول{% endblock %}
+
+{% block content %}
+<div class="auth-page">
+    <div class="container">
+
+        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="logo" class="auth-logo">
+
+        <h2>تسجيل الدخول</h2>
+        <p class="auth-subtitle">مرحبًا بك في منصة أبلغ، سجّل الدخول للوصول إلى خدماتك ومتابعة بلاغاتك.</p>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <p class="flash-message {{ category }}">{{ message }}</p>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        <!-- تبويبات مستخدم / أدمن -->
+        <div class="login-tabs">
+            <button class="login-tab-btn active" onclick="switchTab('user', this)" type="button">
+                <i class="fa-solid fa-user"></i>
+                مستخدم
+            </button>
+            <button class="login-tab-btn" onclick="switchTab('admin', this)" type="button">
+                <i class="fa-solid fa-shield-halved"></i>
+                أدمن
+            </button>
+        </div>
+
+        <!-- فورم المستخدم -->
+        <div id="tab-user" class="login-tab-content active">
+            <form action="{{ url_for('login') }}" method="POST">
+
+                <div class="input-group">
+                    <i class="fa-solid fa-user input-icon"></i>
+                    <input type="text" id="identifier" name="identifier" placeholder="البريد الإلكتروني أو رقم الجوال" required>
+                </div>
+
+                <div class="input-group password-group">
+                    <i class="fa-solid fa-lock input-icon"></i>
+                    <input type="password" id="password" name="password" placeholder="كلمة المرور" required>
+                    <span class="toggle-password" onclick="togglePassword('password', this)">
+                        <i class="fa-solid fa-eye"></i>
+                    </span>
+                </div>
+
+                <button type="submit">تسجيل الدخول</button>
+
+            </form>
+        </div>
+
+        <!-- فورم الأدمن -->
+         <div id="tab-admin" class="login-tab-content">
+            <form action="{{ url_for('admin_login') }}" method="POST">
+
+                <div class="input-group">
+                    <i class="fa-solid fa-user-shield input-icon"></i>
+                    <input type="text" id="admin_identifier" name="identifier" placeholder="البريد الإلكتروني أو رقم الجوال" required>
+                </div>
+
+                <div class="input-group password-group">
+                    <i class="fa-solid fa-lock input-icon"></i>
+                    <input type="password" id="admin_password" name="password" placeholder="كلمة المرور" required>
+                    <span class="toggle-password" onclick="togglePassword('admin_password', this)">
+                        <i class="fa-solid fa-eye"></i>
+                    </span>
+                </div>
+
+                <button type="submit" style="background: linear-gradient(135deg, #1b5e20, #144617);">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    تسجيل الدخول
+                </button>
+
+            </form>
+        </div>
+
+        <div class="link">
+            <a href="{{ url_for('forgot_password_page') }}">نسيت كلمة المرور؟</a>
+        </div>
+
+        <div class="link" id="register-link">
+            <p>ليس لديك حساب؟</p>
+            <a href="{{ url_for('register_page') }}">إنشاء حساب</a>
+        </div>
+
+    </div>
+</div>
+
+
+<script>
+function switchTab(name, btn) {
+    document.querySelectorAll(".login-tab-content").forEach(t => t.classList.remove("active"));
+    document.querySelectorAll(".login-tab-btn").forEach(b => b.classList.remove("active"));
+    document.getElementById("tab-" + name).classList.add("active");
+    btn.classList.add("active");
+
+    const registerLink = document.getElementById("register-link");
+    if (registerLink) {
+        registerLink.style.display = name === "admin" ? "none" : "";
+    }
+}
+
+function togglePassword(inputId, element) {
+    const passwordInput = document.getElementById(inputId);
+    const icon = element.querySelector("i");
+
+    if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        icon.classList.remove("fa-eye");
+        icon.classList.add("fa-eye-slash");
+    } else {
+        passwordInput.type = "password";
+        icon.classList.remove("fa-eye-slash");
+        icon.classList.add("fa-eye");
+    }
+}
+
+window.addEventListener("load", () => {
+    const errorMessage = document.querySelector(".flash-message.error");
+
+    const userIdentifierInput = document.getElementById("identifier");
+    const userPasswordInput = document.getElementById("password");
+
+    const adminIdentifierInput = document.getElementById("admin_identifier");
+    const adminPasswordInput = document.getElementById("admin_password");
+
+    if (errorMessage) {
+        if (userIdentifierInput) userIdentifierInput.classList.add("error");
+        if (userPasswordInput) userPasswordInput.classList.add("error");
+        if (adminIdentifierInput) adminIdentifierInput.classList.add("error");
+        if (adminPasswordInput) adminPasswordInput.classList.add("error");
+
+        setTimeout(() => {
+            if (userIdentifierInput) userIdentifierInput.classList.remove("error");
+            if (userPasswordInput) userPasswordInput.classList.remove("error");
+            if (adminIdentifierInput) adminIdentifierInput.classList.remove("error");
+            if (adminPasswordInput) adminPasswordInput.classList.remove("error");
+        }, 500);
+    }
+});
+</script>
+{% endblock %}

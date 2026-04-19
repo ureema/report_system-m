@@ -1,0 +1,296 @@
+.support-page {
+    width: 92%;
+    max-width: 1100px;
+    margin: 40px auto;
+}
+
+.support-header {
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+.support-header i {
+    font-size: 32px;
+    color: #2e7d32;
+    margin-bottom: 10px;
+}
+
+.support-header h1 {
+    font-size: 32px;
+    color: #1b5e20;
+    font-weight: 800;
+}
+
+.support-header p {
+    color: #777;
+}
+
+.support-messages {
+    margin-bottom: 20px;
+}
+
+.flash-message {
+    padding: 12px 14px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.flash-message.success {
+    background: #e8f5e9;
+    color: #2f855a;
+    border: 1px solid #c8e6c9;
+}
+
+.flash-message.error {
+    background: #fff3f3;
+    color: #c53030;
+    border: 1px solid #fecaca;
+}
+
+.support-grid {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 25px;
+    margin-bottom: 25px;
+}
+
+.support-info {
+    display: grid;
+    gap: 15px;
+}
+
+.info-card {
+    background: white;
+    padding: 18px;
+    border-radius: 14px;
+    box-shadow: 0 6px 14px rgba(0,0,0,0.06);
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.info-card:hover {
+    transform: translateY(-4px);
+}
+
+.info-card i {
+    font-size: 22px;
+    color: #2e7d32;
+    margin-bottom: 8px;
+}
+
+.info-card h3 {
+    color: #1b5e20;
+    font-size: 14px;
+    margin-bottom: 4px;
+}
+
+.info-card p {
+    font-size: 13px;
+    color: #666;
+}
+
+.support-form,
+.faq-card,
+.user-history-card {
+    background: white;
+    padding: 25px;
+    border-radius: 18px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+}
+
+.support-form h2,
+.faq-card h2,
+.user-history-card h2 {
+    color: #2e7d32;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #dbeadc;
+    border-radius: 10px;
+    background: #f9fdf9;
+    font-family: "Cairo", sans-serif;
+    box-sizing: border-box;
+}
+
+.form-group textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 12px;
+    background: #2e7d32;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.submit-btn:hover {
+    background: #1b5e20;
+    transform: scale(1.02);
+}
+
+.faq-card {
+    margin-bottom: 25px;
+}
+
+.faq-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.faq-item {
+    background: #f9fdf9;
+    border-radius: 12px;
+    padding: 16px;
+    border-right: 4px solid #38a169;
+}
+
+.faq-q {
+    font-weight: 700;
+    color: #2f855a;
+    margin-bottom: 8px;
+}
+
+.faq-a {
+    color: #666;
+    line-height: 1.8;
+    font-size: 13px;
+}
+
+.user-history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.history-item {
+    background: #f9fdf9;
+    border-right: 4px solid #38a169;
+    border-radius: 14px;
+    padding: 16px;
+}
+
+.history-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.history-type {
+    font-weight: 800;
+    color: #2f855a;
+}
+
+.history-status {
+    background: #e8f5e9;
+    color: #2f855a;
+    padding: 5px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.history-body p {
+    color: #444;
+    line-height: 1.8;
+    margin-bottom: 8px;
+}
+
+.history-reply {
+    color: #2f855a;
+    background: #eef8ef;
+    padding: 10px 12px;
+    border-radius: 10px;
+}
+
+@media (max-width: 900px) {
+    .support-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .faq-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ===== dark mode ===== */
+html[data-theme="dark"] .support-header h1,
+html[data-theme="dark"] .info-card h3,
+html[data-theme="dark"] .support-form h2,
+html[data-theme="dark"] .faq-card h2,
+html[data-theme="dark"] .user-history-card h2,
+html[data-theme="dark"] .faq-q,
+html[data-theme="dark"] .history-type,
+html[data-theme="dark"] .support-header i,
+html[data-theme="dark"] .info-card i {
+    color: var(--primary);
+}
+
+html[data-theme="dark"] .support-header p,
+html[data-theme="dark"] .info-card p,
+html[data-theme="dark"] .faq-a,
+html[data-theme="dark"] .history-body p {
+    color: var(--text-soft);
+}
+
+html[data-theme="dark"] .info-card,
+html[data-theme="dark"] .support-form,
+html[data-theme="dark"] .faq-card,
+html[data-theme="dark"] .user-history-card,
+html[data-theme="dark"] .faq-item,
+html[data-theme="dark"] .history-item {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.28);
+}
+
+html[data-theme="dark"] .flash-message.success {
+    background: rgba(34,197,94,0.12);
+    color: #baf7cd;
+    border: 1px solid rgba(74,222,128,0.25);
+}
+
+html[data-theme="dark"] .flash-message.error {
+    background: rgba(220,38,38,0.12);
+    color: #fecaca;
+    border: 1px solid rgba(248,113,113,0.25);
+}
+
+html[data-theme="dark"] .form-group input,
+html[data-theme="dark"] .form-group textarea,
+html[data-theme="dark"] .form-group select {
+    background: var(--bg-soft);
+    color: var(--text-main);
+    border: 1px solid var(--border);
+}
+
+html[data-theme="dark"] .history-status {
+    background: rgba(74,222,128,0.12);
+    color: #baf7cd;
+}
+
+html[data-theme="dark"] .history-reply {
+    background: rgba(74,222,128,0.08);
+    color: #baf7cd;
+    border: 1px solid rgba(74,222,128,0.18);
+}

@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}تقديم بلاغ{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='style_report.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="report-page-wrapper">
+    <div class="form-card">
+
+        <div class="progress-bar">
+            <div class="step">
+                <div class="step-circle done">✓</div>
+                <span class="step-label">اختيار النوع</span>
+            </div>
+
+            <div class="step-line done"></div>
+
+            <div class="step">
+                <div class="step-circle active">2</div>
+                <span class="step-label">تفاصيل البلاغ</span>
+            </div>
+
+            <div class="step-line"></div>
+
+            <div class="step">
+                <div class="step-circle pending">3</div>
+                <span class="step-label">تم الإرسال</span>
+            </div>
+        </div>
+
+        <div class="form-header">
+            <h2>تقديم بلاغ - {{ type }}</h2>
+           <p>اكتب المشكلة او استخدم مساعد أبلغ الذكي </p>
+        </div>
+
+        <form action="{{ url_for('submit_report') }}" method="POST">
+            <input type="hidden" name="type" value="{{ type }}">
+
+            <div class="field">
+                <label>الجهة المقترحة</label>
+                <input type="text" id="currentTypePreview" value="{{ type }}" readonly>
+            </div>
+
+            <div class="field">
+                <label>وصف المشكلة</label>
+                <textarea
+                    id="description"
+                    name="description"
+                    placeholder="اكتب وصف البلاغ ..."
+                    required
+                ></textarea>
+            </div>
+
+            <button type="submit" class="submit-btn">إرسال البلاغ</button>
+        </form>
+
+        <div class="back-link">
+            <a href="{{ url_for('report_page') }}">العودة لاختيار النوع</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

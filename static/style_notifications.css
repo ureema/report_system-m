@@ -1,0 +1,157 @@
+.notifications-page {
+    width: 92%;
+    max-width: 900px;
+    margin: 40px auto;
+}
+
+.notifications-card {
+    background: white;
+    border-radius: 24px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+/* العنوان */
+.notifications-header {
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+.notifications-header i {
+    font-size: 32px;
+    color: #2f855a;
+    margin-bottom: 10px;
+}
+
+.notifications-header h1 {
+    color: #2f855a;
+    font-size: 30px;
+    font-weight: 800;
+}
+
+.notifications-header p {
+    color: #777;
+    font-size: 14px;
+}
+
+/* القائمة */
+.notifications-list {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+/* الكارد */
+.notification-item {
+    background: linear-gradient(135deg, #f9fdf9, #ffffff);
+    border-radius: 18px;
+    padding: 20px;
+    border-right: 5px solid #38a169;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.notification-item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(0,0,0,0.08);
+}
+
+/* خط لامع عند الهوفر */
+.notification-item::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: -100%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    transition: 0.6s;
+}
+
+.notification-item:hover::before {
+    right: 120%;
+}
+
+/* الأعلى */
+.notification-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+}
+
+/* نوع البلاغ */
+.notification-type {
+    font-weight: 800;
+    color: #2f855a;
+    font-size: 15px;
+}
+
+/* الحالة */
+.notification-status {
+    background: #e6f4ea;
+    color: #2f855a;
+    padding: 5px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+/* النص */
+.notification-body p {
+    margin-bottom: 10px;
+    color: #444;
+    line-height: 1.8;
+    font-size: 14px;
+}
+
+/* الرد */
+.notification-reply {
+    background: #eef8ef;
+    border-right: 4px solid #38a169;
+    padding: 12px;
+    border-radius: 10px;
+    color: #2f855a;
+    font-weight: 600;
+}
+
+/* أيقونة */
+.notification-icon {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    font-size: 20px;
+    color: #38a169;
+    opacity: 0.2;
+}
+
+/* فارغ */
+.empty-box {
+    text-align: center;
+    padding: 50px 20px;
+    color: #999;
+}
+
+.empty-box i {
+    font-size: 40px;
+    margin-bottom: 15px;
+    color: #2f855a;
+}
+
+/* ===== DARK MODE GREEN - NOTIFICATIONS ===== */
+
+html[data-theme="dark"] .notifications-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+}
+
+html[data-theme="dark"] .notification-item {
+    background: var(--bg-soft);
+}
+
+html[data-theme="dark"] .notification-title {
+    color: var(--primary);
+}

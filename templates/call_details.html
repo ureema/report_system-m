@@ -1,0 +1,194 @@
+{% extends "base.html" %}
+
+{% block title %}تفاصيل البلاغ الهاتفي{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='style_panel.css') }}">
+<style>
+    .call-details-card {
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1);
+        padding: 32px;
+        max-width: 800px;
+        margin: 40px auto;
+    }
+    .call-details-title {
+        font-size: 26px;
+        font-weight: 700;
+        color: #2d3748;
+        margin-bottom: 24px;
+        border-right: 4px solid #2f855a;
+        padding-right: 16px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+    .call-details-title i {
+        color: #2f855a;
+        font-size: 28px;
+    }
+    .info-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+    .info-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 20px;
+        padding: 12px 0;
+        border-bottom: 1px solid #edf2f7;
+    }
+    .info-label {
+        width: 140px;
+        font-weight: 600;
+        color: #4a5568;
+        font-size: 15px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .info-label i {
+        width: 20px;
+        color: #2f855a;
+    }
+    .info-value {
+        flex: 1;
+        color: #2d3748;
+        line-height: 1.5;
+        word-break: break-word;
+        background: #f7fafc;
+        padding: 8px 12px;
+        border-radius: 10px;
+        font-size: 15px;
+    }
+    .transcript-text {
+        background: #fef5e7;
+        border-right: 3px solid #ed8936;
+        white-space: pre-wrap;
+    }
+    .map-link {
+        color: #2f855a;
+        text-decoration: none;
+        font-weight: 500;
+    }
+    .map-link:hover {
+        text-decoration: underline;
+    }
+    .action-buttons {
+        margin-top: 32px;
+        display: flex;
+        justify-content: flex-start;
+    }
+    .back-btn {
+        background: #4a5568;
+        color: white;
+        padding: 10px 24px;
+        border-radius: 30px;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.2s;
+        font-weight: 500;
+    }
+    .back-btn:hover {
+        background: #2d3748;
+        transform: translateX(-5px);
+    }
+    @media (max-width: 640px) {
+        .call-details-card {
+            padding: 20px;
+            margin: 20px;
+        }
+        .info-item {
+            flex-direction: column;
+            gap: 8px;
+        }
+        .info-label {
+            width: auto;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="call-details-card">
+    <div class="call-details-title">
+        <i class="fa-solid fa-phone-volume"></i>
+        <span>تفاصيل البلاغ الهاتفي #{{ call.id }}</span>
+    </div>
+
+    <div class="info-grid">
+        <div class="info-item">
+            <div class="info-label">
+                <i class="fa-solid fa-tag"></i>
+                نوع البلاغ
+            </div>
+            <div class="info-value">{{ call.report_type }}</div>
+        </div>
+
+        <div class="info-item">
+            <div class="info-label">
+                <i class="fa-solid fa-robot"></i>
+                التصنيف التلقائي
+            </div>
+            <div class="info-value">
+                {% if call.problem_category %}
+                    <span style="background: #e2f0e6; padding: 4px 12px; border-radius: 20px; font-size: 13px;">{{ call.problem_category }}</span>
+                {% else %}
+                    غير مصنف
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="info-item">
+            <div class="info-label">
+                <i class="fa-solid fa-microphone-lines"></i>
+                النص المتحدث به
+            </div>
+            <div class="info-value transcript-text">
+                {% if call.transcript %}
+                    {{ call.transcript }}
+                {% else %}
+                    <span style="color: #a0aec0;">لم يتم التعرف على نص</span>
+                {% endif %}
+            </div>
+        </div>
+
+        {% if call.location_lat and call.location_lng %}
+        <div class="info-item">
+            <div class="info-label">
+                <i class="fa-solid fa-location-dot"></i>
+                الموقع
+            </div>
+            <div class="info-value">
+                خط العرض: {{ call.location_lat }}, خط الطول: {{ call.location_lng }}
+                <br>
+                <a href="https://www.google.com/maps?q={{ call.location_lat }},{{ call.location_lng }}" target="_blank" class="map-link">
+                    <i class="fa-solid fa-map"></i> عرض على الخريطة
+                </a>
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="info-item">
+            <div class="info-label">
+                <i class="fa-solid fa-calendar"></i>
+                تاريخ الإنشاء
+            </div>
+            <div class="info-value">
+                {{ call.created_at.strftime('%Y-%m-%d %H:%M') if call.created_at else '—' }}
+            </div>
+        </div>
+    </div>
+
+    <div class="action-buttons">
+        <a href="{{ url_for('my_reports') }}" class="back-btn">
+            <i class="fa-solid fa-arrow-right"></i>
+            العودة إلى بلاغاتي
+        </a>
+    </div>
+</div>
+{% endblock %}

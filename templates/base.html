@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="{{ current_theme }}">
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}أبلغ{% endblock %}</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style_home.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style_auth.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+    <div class="page-background"></div>
+    <div class="page-pattern"></div>
+
+    <div class="navbar">
+        <div class="logo">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="logo">
+        </div>
+
+        <ul class="menu">
+            <li><a href="{{ url_for('home') }}">الرئيسية</a></li>
+ {% if current_user %}
+       {% if current_user.email == "reemasaad756@gmail.com" %}
+            <li><a href="{{ url_for('dashboard') }}">لوحة البلاغات</a></li>
+        {% else %}
+            <li><a href="{{ url_for('report_page') }}">تقديم بلاغ</a></li>
+            <li><a href="{{ url_for('my_reports') }}">بلاغاتي</a></li>
+        {% endif %}
+    {% else %}
+        <li><a href="{{ url_for('login_page') }}">تسجيل الدخول</a></li>
+    {% endif %}
+</ul>
+
+        <div class="icons">
+            <button class="menu-toggle" id="menuToggle" type="button" title="القائمة">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+
+            <div class="search-wrapper" id="searchWrapper">
+                <button class="search-icon-btn" id="searchToggle" type="button" title="بحث">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+
+                <div class="search-panel" id="searchPanel">
+                    <input type="text" id="searchInput" placeholder="ابحث في النظام..." autocomplete="off">
+                    <div class="search-results" id="searchResults"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="side-menu" id="sideMenu">
+        <div class="side-header">
+            {% if user and user.avatar %}
+                <img src="{{ url_for('static', filename=user.avatar) }}" class="side-avatar" alt="avatar">
+            {% else %}
+                <div class="side-avatar empty-avatar">
+                    <i class="fa-solid fa-user"></i>
+                </div>
+            {% endif %}
+
+            <div class="side-user-info">
+                <span class="side-user-name">
+                    {% if user %}{{ user.name }}{% else %}غير مسجل{% endif %}
+                </span>
+                <span class="side-user-email">
+                    {% if user %}{{ user.email }}{% else %}لا توجد بيانات{% endif %}
+                </span>
+            </div>
+        </div>
+
+     
+{% if current_user %}
+    <a href="{{ url_for('profile_page') }}">
+        <i class="fa-solid fa-user"></i>
+        ملفي الشخصي
+    </a>
+
+    <a href="{{ url_for('settings_page') }}">
+        <i class="fa-solid fa-gear"></i>
+        الإعدادات
+    </a>
+
+    {% if current_user.email == "reemasaad756@gmail.com" %}
+        <a href="{{ url_for('dashboard') }}">
+            <i class="fa-solid fa-shield-halved"></i>
+            لوحة البلاغات
+        </a>
+
+        <a href="{{ url_for('admin_support') }}">
+            <i class="fa-solid fa-headset"></i>
+            رسائل الدعم
+        </a>
+
+        <a href="{{ url_for('admin_notifications_page') }}" class="notification-link">
+            <i class="fa-solid fa-bell {% if unread_admin_support_count > 0 %}bell-shake{% endif %}"></i>
+            إشعارات 
+            {% if unread_admin_support_count > 0 %}
+                <span class="notification-badge">{{ unread_admin_support_count }}</span>
+            {% endif %}
+        </a>
+
+    {% else %}
+
+        <a href="{{ url_for('report_page') }}">
+            <i class="fa-solid fa-flag"></i>
+            تقديم بلاغ
+        </a>
+
+        <a href="{{ url_for('my_reports') }}">
+            <i class="fa-solid fa-folder-open"></i>
+            بلاغاتي
+        </a>
+
+        <a href="{{ url_for('support_page') }}">
+            <i class="fa-solid fa-headset"></i>
+            الدعم الفني
+        </a>
+
+        <a href="{{ url_for('notifications_page') }}" class="notification-link">
+            <i class="fa-solid fa-bell {% if unread_support_count > 0 %}bell-shake{% endif %}"></i>
+            الإشعارات
+            {% if unread_support_count > 0 %}
+                <span class="notification-badge">{{ unread_support_count }}</span>
+            {% endif %}
+        </a>
+
+    {% endif %}
+
+    <a href="{{ url_for('about_us') }}">
+        <i class="fa-solid fa-lightbulb"></i>
+        عن المنصة
+    </a>
+
+    <a href="{{ url_for('about') }}">
+        <i class="fas fa-circle-info"></i>
+        من نحن
+    </a>
+
+    <a href="{{ url_for('logout') }}" class="logout">
+        <i class="fa-solid fa-right-from-bracket"></i>
+        تسجيل الخروج
+    </a>
+
+{% else %}
+    <a href="{{ url_for('login_page') }}">
+        <i class="fa-solid fa-right-to-bracket"></i>
+        تسجيل الدخول
+    </a>
+
+    <a href="{{ url_for('register_page') }}">
+        <i class="fa-solid fa-user-plus"></i>
+        إنشاء حساب
+    </a>
+{% endif %}
+    </div>
+
+    <main class="main-content">
+        {% block content %}{% endblock %}
+    </main>
+
+    <div class="ai-chat-panel" id="aiChatPanel">
+        <div class="ai-chat-header">
+            <h3>مساعد أبلغ</h3>
+            <button id="aiCloseBtn" type="button">✖</button>
+        </div>
+
+        <div class="ai-chat-body" id="aiChatBody">
+            <div class="chat-message ai-message">
+                <div class="message-bubble">
+                    مرحبًا 👋 أنا مساعد أبلغ الذكي. اكتب مشكلتك أو سجّلها صوتيًا وسأساعدك في فهم البلاغ وتحديد الجهة المناسبة.
+                </div>
+            </div>
+        </div>
+
+        <div class="ai-chat-footer">
+            <button id="voiceChatBtn" type="button" title="تسجيل صوتي">
+                <i class="fa-solid fa-microphone"></i>
+                <span class="voice-rings"></span>
+            </button>
+
+            <input type="text" id="aiChatInput" placeholder="اكتب هنا...">
+
+            <button id="sendChatBtn" type="button" title="إرسال">
+                <i class="fa-solid fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+
+    <div class="ai-chat-overlay" id="aiChatOverlay"></div>
+  <footer class="site-footer">
+
+    <div class="footer-logo-before">
+        <img src="{{ url_for('static', filename='images/2030.svg') }}" alt="2030">
+    </div>
+
+    <div class="footer-container">
+        <div class="footer-section">
+            <h3>منصة أبلغ</h3>
+            <p>
+                منصة رقمية تهدف إلى تسهيل تقديم البلاغات ومتابعتها بطريقة منظمة وآمنة.
+            </p>
+        </div>
+
+        <div class="footer-section">
+            <h3>تواصل معنا</h3>
+            <p>البريد الإلكتروني</p>
+            <a href="mailto:ablgah.official@gmail.com">ablgah.official@gmail.com</a>
+        </div>
+
+        <div class="footer-section">
+            <h3>حساباتنا</h3>
+            <div class="social-icons">
+                <a href="https://www.instagram.com/ablgh_official?igsh=ZHNscjI4a21xMTk2&utm_source=qr" target="_blank" title="Instagram">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+                <a href="https://x.com/ablagh_official?s=21" target="_blank" title="X">
+                    <i class="fa-brands fa-x-twitter"></i>
+                </a>
+               <a href="https://youtube.com/@ablagh-official?si=9aEpc_dhiO9fV70d" title="YouTube">
+                    <i class="fa-brands fa-youtube"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        جميع الحقوق محفوظه لدى منصة ابلغ -©️ 2026 | Programming & Web Development Team
+    </div>
+</footer>
+
+    <div class="ai-assistant" id="aiAssistantTrigger">
+        <div class="ai-tooltip">
+            مرحبًا! أنا المساعد الذكي
+            <br>
+            اضغط للتحدث معي
+        </div>
+        <div class="ai-button">
+            <i class="fa-solid fa-robot"></i>
+        </div>
+    </div>
+
+    <div class="page-transition" id="pageTransition"></div>
+
+<script>
+const searchToggle = document.getElementById("searchToggle");
+const searchWrapper = document.getElementById("searchWrapper");
+const searchInput = document.getElementById("searchInput");
+const searchResults = document.getElementById("searchResults");
+const menuToggle = document.getElementById("menuToggle");
+const sideMenu = document.getElementById("sideMenu");
+
+if (searchToggle && searchWrapper && searchInput && searchResults) {
+    searchToggle.addEventListener("click", () => {
+        searchWrapper.classList.toggle("active");
+        sideMenu.classList.remove("active");
+        if (searchWrapper.classList.contains("active")) {
+            searchInput.focus();
+        } else {
+            searchInput.value = "";
+            searchResults.innerHTML = "";
+        }
+    });
+}
+
+if (menuToggle && sideMenu) {
+    menuToggle.addEventListener("click", () => {
+        sideMenu.classList.toggle("active");
+        if (searchWrapper) searchWrapper.classList.remove("active");
+        if (searchInput) searchInput.value = "";
+        if (searchResults) searchResults.innerHTML = "";
+    });
+}
+
+document.addEventListener("click", (e) => {
+    if (searchWrapper && !searchWrapper.contains(e.target)) {
+        searchWrapper.classList.remove("active");
+        if (searchInput) searchInput.value = "";
+        if (searchResults) searchResults.innerHTML = "";
+    }
+    if (sideMenu && menuToggle && !sideMenu.contains(e.target) && !menuToggle.contains(e.target)) {
+        sideMenu.classList.remove("active");
+    }
+});
+
+let debounceTimer;
+if (searchInput) {
+    searchInput.addEventListener("input", () => {
+        const query = searchInput.value.trim();
+        clearTimeout(debounceTimer);
+        if (!query) { searchResults.innerHTML = ""; return; }
+
+        debounceTimer = setTimeout(async () => {
+            try {
+                const response = await fetch(`/search-suggestions?q=${encodeURIComponent(query)}`);
+                const data = await response.json();
+                if (!data.length) {
+                    searchResults.innerHTML = `<div class="result-item empty-result">لا توجد نتائج مطابقة</div>`;
+                    return;
+                }
+                searchResults.innerHTML = data.map(item => `
+                    <a class="result-item" href="${item.url}">
+                        <div class="result-title">${item.title}</div>
+                        <div class="result-sub">${item.subtitle}</div>
+                        <div class="result-status">${item.status}</div>
+                    </a>
+                `).join("");
+            } catch (error) {
+                searchResults.innerHTML = `<div class="result-item empty-result">حدث خطأ أثناء تنفيذ البحث</div>`;
+            }
+        }, 250);
+    });
+}
+</script>
+
+<script>
+const pageTransition = document.getElementById("pageTransition");
+
+window.addEventListener("pageshow", () => {
+    document.body.classList.remove("page-is-leaving");
+});
+
+document.addEventListener("click", function(e) {
+    const link = e.target.closest("a");
+    if (!link) return;
+    const href = link.getAttribute("href");
+    const target = link.getAttribute("target");
+    if (!href || href.startsWith("#") || href.startsWith("javascript:") || href.startsWith("mailto:") || target === "_blank" || link.classList.contains("no-transition")) return;
+    const currentUrl = window.location.href.split("#")[0];
+    const nextUrl = new URL(link.href, window.location.origin).href.split("#")[0];
+    if (currentUrl === nextUrl) return;
+    e.preventDefault();
+    document.body.classList.add("page-is-leaving");
+    setTimeout(() => { window.location.href = link.href; }, 260);
+});
+
+window.addEventListener("beforeunload", () => {
+    document.body.classList.add("page-is-leaving");
+});
+</script>
+
+<script>
+const aiAssistantTrigger = document.getElementById("aiAssistantTrigger");
+const aiChatPanel = document.getElementById("aiChatPanel");
+const aiChatOverlay = document.getElementById("aiChatOverlay");
+const aiCloseBtn = document.getElementById("aiCloseBtn");
+const aiChatInput = document.getElementById("aiChatInput");
+const sendChatBtn = document.getElementById("sendChatBtn");
+const aiChatBody = document.getElementById("aiChatBody");
+const voiceChatBtn = document.getElementById("voiceChatBtn");
+
+if (aiAssistantTrigger) {
+    aiAssistantTrigger.onclick = () => {
+        aiChatPanel.classList.add("active");
+        aiChatOverlay.classList.add("active");
+    };
+}
+if (aiCloseBtn) {
+    aiCloseBtn.onclick = () => {
+        aiChatPanel.classList.remove("active");
+        aiChatOverlay.classList.remove("active");
+    };
+}
+if (aiChatOverlay) {
+    aiChatOverlay.onclick = () => {
+        aiChatPanel.classList.remove("active");
+        aiChatOverlay.classList.remove("active");
+    };
+}
+
+function appendMessage(text, type){
+    if (!aiChatBody) return;
+    const div = document.createElement("div");
+    div.className = "chat-message " + type;
+    div.innerHTML = `<div class="message-bubble">${text}</div>`;
+    aiChatBody.appendChild(div);
+    aiChatBody.scrollTop = aiChatBody.scrollHeight;
+}
+
+async function sendChatMessage(customText = null) {
+    const text = (customText ?? aiChatInput.value ?? "").trim();
+    if (!text) return;
+    appendMessage(text, "user-message");
+    if (!customText) aiChatInput.value = "";
+    try {
+        const response = await fetch("/ai-chat", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ message: text })
+        });
+        const data = await response.json();
+        if (data.reply) appendMessage(data.reply, "ai-message");
+        const descriptionField = document.getElementById("description");
+        if (descriptionField && data.clean_description) descriptionField.value = data.clean_description;
+        const typePreview = document.getElementById("currentTypePreview");
+        if (typePreview && data.report_type) typePreview.value = data.report_type;
+    } catch (error) {
+        appendMessage("حدث خطأ أثناء التواصل مع المساعد الذكي.", "ai-message");
+    }
+}
+
+if (sendChatBtn) sendChatBtn.onclick = () => sendChatMessage();
+if (aiChatInput) {
+    aiChatInput.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") { e.preventDefault(); sendChatMessage(); }
+    });
+}
+
+// ========== UPDATED VOICE RECORDING: sends to emergency-voice-report endpoint ==========
+let mediaRecorder = null;
+let audioChunks = [];
+let isRecording = false;
+let currentStream = null;
+
+if (voiceChatBtn) {
+    voiceChatBtn.addEventListener("click", async function () {
+        try {
+            if (!isRecording) {
+                currentStream = await navigator.mediaDevices.getUserMedia({
+                    audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true, channelCount: 1, sampleRate: 48000 }
+                });
+                audioChunks = [];
+                let preferredMimeType = "";
+                if (MediaRecorder.isTypeSupported("audio/webm;codecs=opus")) preferredMimeType = "audio/webm;codecs=opus";
+                else if (MediaRecorder.isTypeSupported("audio/webm")) preferredMimeType = "audio/webm";
+                else { appendMessage("هذا المتصفح لا يدعم التسجيل الصوتي بالشكل المطلوب.", "ai-message"); return; }
+
+                mediaRecorder = new MediaRecorder(currentStream, { mimeType: preferredMimeType, audioBitsPerSecond: 128000 });
+                mediaRecorder.ondataavailable = (event) => { if (event.data.size > 0) audioChunks.push(event.data); };
+                mediaRecorder.onstop = async () => {
+                    const audioBlob = new Blob(audioChunks, { type: mediaRecorder.mimeType || "audio/webm" });
+                    const formData = new FormData();
+                    formData.append("audio", audioBlob, "recording.webm");
+                    appendMessage("⏳ جاري تحليل الصوت والكشف عن الحالات الطارئة...", "ai-message");
+                    try {
+                        const response = await fetch("/emergency-voice-report", { method: "POST", body: formData });
+                        const data = await response.json();
+                        if (data.error) {
+                            appendMessage(`❌ فشل التحليل: ${data.error}`, "ai-message");
+                            return;
+                        }
+                        let reply = `📝 النص: ${data.transcript}\n\n`;
+                        if (data.emergency) {
+                            reply += `🚨 تم تصنيف المشكلة كـ "${data.category}" وهي حالة طارئة! `;
+                            if (data.call_initiated) {
+                                reply += `تم إبلاغ فريق الطوارئ وسيتم الاتصال بك قريباً. (رقم المكالمة: ${data.call_sid})`;
+                            } else {
+                                reply += `لم نتمكن من إبلاغ فريق الطوارئ (خطأ في الاتصال). سيتم مراجعة البلاغ يدوياً.`;
+                            }
+                        } else {
+                            reply += `لم يتم التعرف على مشكلة طارئة. سيتم إضافة بلاغ عادي.`;
+                            // Optionally, auto‑fill the description field on the report form
+                            const descriptionField = document.getElementById("description");
+                            if (descriptionField) descriptionField.value = data.transcript;
+                        }
+                        appendMessage(reply, "ai-message");
+                    } catch (error) {
+                        appendMessage("❌ فشل الاتصال بالخادم أثناء تحليل الصوت.", "ai-message");
+                    } finally {
+                        if (currentStream) { currentStream.getTracks().forEach(track => track.stop()); currentStream = null; }
+                    }
+                };
+                mediaRecorder.start();
+                isRecording = true;
+                voiceChatBtn.classList.add("recording");
+                appendMessage("🎙️ بدأ التسجيل... تحدث الآن ثم اضغط نفس الزر للإيقاف.", "ai-message");
+            } else {
+                mediaRecorder.stop();
+                isRecording = false;
+                voiceChatBtn.classList.remove("recording");
+                appendMessage("⏹️ توقف التسجيل، جاري المعالجة...", "ai-message");
+            }
+        } catch (err) {
+            appendMessage("❌ لم يتم السماح بالوصول إلى الميكروفون.", "ai-message");
+            isRecording = false;
+            voiceChatBtn.classList.remove("recording");
+        }
+    });
+}
+</script>
+
+</body>
+</html>

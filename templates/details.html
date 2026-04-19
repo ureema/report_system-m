@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}تفاصيل البلاغ{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='style_panel.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="details-page">
+    <div class="details-card">
+
+        <h2 class="details-title">تفاصيل البلاغ</h2>
+
+        <div class="info-row">
+            <span class="info-label">رقم البلاغ:</span>
+            <span class="info-value">#{{ report.id }}</span>
+        </div>
+
+        <div class="info-row">
+            <span class="info-label">النوع:</span>
+            <span class="info-value">{{ report.type }}</span>
+        </div>
+
+        <div class="info-row">
+            <span class="info-label">الوصف:</span>
+            <span class="info-value" style="white-space: pre-line;">
+                {{ report.description }}
+               </span>
+        </div>
+
+        <div class="info-row">
+            <span class="info-label">الحالة:</span>
+            <span class="info-value">
+                {% if report.status == 'جديد' %}
+                    <span class="status new">جديد</span>
+                {% elif report.status == 'قيد المعالجة' %}
+                    <span class="status processing">قيد المعالجة</span>
+                {% else %}
+                    <span class="status closed">مغلق</span>
+                {% endif %}
+            </span>
+        </div>
+
+        <div class="actions">
+
+            {% if current_user and current_user.is_admin %}
+            <!-- أزرار التحديث للأدمن فقط بـ POST -->
+            <form action="{{ url_for('update_report', report_id=report.id) }}" method="POST" style="display:inline;">
+                <input type="hidden" name="new_status" value="processing">
+                <button type="submit" class="btn btn-processing">
+                    تحديث إلى قيد المعالجة
+                </button>
+            </form>
+
+            <form action="{{ url_for('update_report', report_id=report.id) }}" method="POST" style="display:inline;">
+                <input type="hidden" name="new_status" value="closed">
+                <button type="submit" class="btn btn-closed"
+                onclick="return confirm('هل أنت متأكد من إغلاق البلاغ؟')">
+                  إغلاق البلاغ
+              </button>
+            </form>
+
+            <a href="{{ url_for('dashboard') }}" class="btn btn-back">
+                الرجوع للوحة البلاغات
+            </a>
+            {% else %}
+            <a href="{{ url_for('my_reports') }}" class="btn btn-back">
+                الرجوع لبلاغاتي
+            </a>
+            {% endif %}
+
+        </div>
+
+    </div>
+</div>
+{% endblock %}

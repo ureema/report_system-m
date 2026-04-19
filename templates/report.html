@@ -1,0 +1,272 @@
+    {% extends "base.html" %}
+
+    {% block title %}تقديم بلاغ{% endblock %}
+
+    {% block extra_css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='style_report.css') }}">
+
+    {% endblock %}
+
+    {% block content %}
+    <div class="report-page-wrapper">
+        <div class="page-container">
+            <!-- Global location button -->
+            <div style="text-align: left; margin-bottom: 20px;">
+                <button id="globalLocationBtn" class="global-location-btn">
+                    <i class="fa-solid fa-location-dot"></i> إرسال الموقع الحالي
+                </button>
+                <div id="locationStatus" class="location-status"></div>
+            </div>
+
+            <h2>اختر نوع البلاغ:</h2>
+
+            <div class="progress-bar">
+                <div class="step">
+                    <div class="step-circle active">1</div>
+                    <span class="step-label">اختيار النوع</span>
+                </div>
+                <div class="step-line"></div>
+                <div class="step">
+                    <div class="step-circle pending">2</div>
+                    <span class="step-label">تفاصيل البلاغ</span>
+                </div>
+                <div class="step-line"></div>
+                <div class="step">
+                    <div class="step-circle pending">3</div>
+                    <span class="step-label">تم الإرسال</span>
+                </div>
+            </div>
+
+            <div class="cards-grid">
+                <!-- Card for each type with its own Call button -->
+                <div class="card" data-type="بلدية">
+                    <div class="icon-circle">
+                        <svg viewBox="0 0 24 24" stroke="#2f855a" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="26" height="26"><path d="M3 21h18M3 10h18M5 6l7-3 7 3M4 10v11M20 10v11M8 14v3M12 14v3M16 14v3"/></svg>
+                    </div>
+                    <h3>بلدية</h3>
+                    <p>بلاغات تخص الخدمات البلدية</p>
+                    <div class="link-btn" onclick="selectType('بلدية')">قدّم بلاغ يدوياً ←</div>
+                    <button class="card-call-btn" onclick="initiateCall('بلدية', this)">
+                        <i class="fa-solid fa-phone"></i>  اتصل لتقديم البلاغ
+                    </button>
+                </div>
+
+                <div class="card" data-type="كهرباء">
+                    <div class="icon-circle">
+                        <svg viewBox="0 0 24 24" stroke="#2f855a" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="26" height="26"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                    </div>
+                    <h3>كهرباء</h3>
+                    <p>بلاغات تخص انقطاع الكهرباء</p>
+                    <div class="link-btn" onclick="selectType('كهرباء')">قدّم بلاغ يدوياً ←</div>
+                    <button class="card-call-btn" onclick="initiateCall('كهرباء', this)">
+                        <i class="fa-solid fa-phone"></i>  اتصل لتقديم البلاغ
+                    </button>
+                </div>
+
+                <div class="card" data-type="مياه">
+                    <div class="icon-circle">
+                        <svg viewBox="0 0 24 24" stroke="#2f855a" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="26" height="26"><path d="M12 2C6 8 4 12 4 15a8 8 0 0016 0c0-3-2-7-8-13z"/></svg>
+                    </div>
+                    <h3>مياه</h3>
+                    <p>بلاغات تخص المياه والصرف</p>
+                    <div class="link-btn" onclick="selectType('مياه')">قدّم بلاغ يدوياً ←</div>
+                    <button class="card-call-btn" onclick="initiateCall('مياه', this)">
+                        <i class="fa-solid fa-phone"></i>  اتصل لتقديم البلاغ
+                    </button>
+                </div>
+
+                <div class="card" data-type="طرق وجسور">
+                    <div class="icon-circle">
+                        <svg viewBox="0 0 24 24" stroke="#2f855a" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="26" height="26"><path d="M3 17l4-10h10l4 10M3 17h18M7 17v2M17 17v2M12 7v10"/></svg>
+                    </div>
+                    <h3>طرق وجسور</h3>
+                    <p>بلاغات تخص الطرق والجسور</p>
+                    <div class="link-btn" onclick="selectType('طرق وجسور')">قدّم بلاغ يدوياً ←</div>
+                    <button class="card-call-btn" onclick="initiateCall('طرق وجسور', this)">
+                        <i class="fa-solid fa-phone"></i>  اتصل لتقديم البلاغ
+                    </button>
+                </div>
+
+                <div class="card" data-type="صحة">
+                    <div class="icon-circle">
+                        <svg viewBox="0 0 24 24" stroke="#2f855a" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="26" height="26"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                    </div>
+                    <h3>صحة</h3>
+                    <p>بلاغات تخص الخدمات الصحية</p>
+                    <div class="link-btn" onclick="selectType('صحة')">قدّم بلاغ يدوياً ←</div>
+                    <button class="card-call-btn" onclick="initiateCall('صحة', this)">
+                        <i class="fa-solid fa-phone"></i>  اتصل لتقديم البلاغ
+                    </button>
+                </div>
+
+                <div class="card" data-type="تعليم">
+                    <div class="icon-circle">
+                        <svg viewBox="0 0 24 24" stroke="#2f855a" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="26" height="26"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2zM22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
+                    </div>
+                    <h3>تعليم</h3>
+                    <p>بلاغات تخص القطاع التعليمي</p>
+                    <div class="link-btn" onclick="selectType('تعليم')">قدّم بلاغ يدوياً ←</div>
+                    <button class="card-call-btn" onclick="initiateCall('تعليم', this)">
+                        <i class="fa-solid fa-phone"></i>  اتصل لتقديم البلاغ
+                    </button>
+                </div>
+
+                        <div class="card" data-type="بيئة ونظافة">
+                        <div class="icon-circle">
+                            <svg viewBox="0 0 24 24" stroke="#2f855a" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="26" height="26"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14M10 10v6M14 10v6"/></svg>
+                            </div>
+                             <h3>بيئة ونظافة</h3>
+                            <p>بلاغات تخص النظافة والمخلفات والتشوه البصري</p>
+                            <div class="link-btn" onclick="selectType('بيئة ونظافة')">قدّم بلاغ يدوياً ←</div>
+                            <button class="card-call-btn" onclick="initiateCall('بيئة ونظافة', this)">
+                                <i class="fa-solid fa-phone"></i>  اتصل لتقديم البلاغ
+                            </button>
+                        </div>
+
+            <div class="card" data-type="إنارة عامة">
+                <div class="icon-circle">
+                    <svg viewBox="0 0 24 24" stroke="#2f855a" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="26" height="26"><path d="M9 18h6M10 22h4M12 2a7 7 0 00-4 13c.6.5 1 1.2 1 2h6c0-.8.4-1.5 1-2A7 7 0 0012 2z"/></svg>
+                </div>
+                <h3>إنارة عامة</h3>
+                <p>بلاغات تخص أعطال الإنارة وأعمدة الشوارع</p>
+                <div class="link-btn" onclick="selectType('إنارة عامة')">قدّم بلاغ يدوياً ←</div>
+                <button class="card-call-btn" onclick="initiateCall('إنارة عامة', this)">
+                    <i class="fa-solid fa-phone"></i>  اتصل لتقديم البلاغ
+                </button>
+            </div>
+
+            <div class="card" data-type="اتصالات">
+                <div class="icon-circle">
+                    <svg viewBox="0 0 24 24" stroke="#2f855a" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="26" height="26"><path d="M5 12a7 7 0 0114 0M8.5 12a3.5 3.5 0 017 0M12 12h.01M4 20a16 16 0 0116 0"/></svg>
+                </div>
+                <h3>اتصالات</h3>
+                <p>بلاغات تخص انقطاع الشبكة أو ضعف خدمات الاتصالات</p>
+                <div class="link-btn" onclick="selectType('اتصالات')">قدّم بلاغ يدوياً ←</div>
+                <button class="card-call-btn" onclick="initiateCall('اتصالات', this)">
+                    <i class="fa-solid fa-phone"></i>  اتصل لتقديم البلاغ
+                </button>
+            </div>
+
+            <div class="card" data-type="إسكان">
+                <div class="icon-circle">
+                    <svg viewBox="0 0 24 24" stroke="#2f855a" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="26" height="26"><path d="M3 11l9-7 9 7M5 10v10h14V10M9 20v-6h6v6"/></svg>
+                </div>
+                <h3>إسكان</h3>
+                <p>بلاغات تخص الخدمات والمرافق السكنية</p>
+                <div class="link-btn" onclick="selectType('إسكان')">قدّم بلاغ يدوياً ←</div>
+                <button class="card-call-btn" onclick="initiateCall('إسكان', this)">
+                    <i class="fa-solid fa-phone"></i>  اتصل لتقديم البلاغ
+                </button>
+            </div>
+
+            <div class="card" data-type="تجارة">
+                <div class="icon-circle">
+                    <svg viewBox="0 0 24 24" stroke="#2f855a" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="26" height="26">
+                        <path d="M3 3h18l-2 13H5L3 3zM16 21a2 2 0 11-4 0M6 21a2 2 0 11-4 0"/>
+                    </svg>
+                </div>
+                <h3>تجارة</h3>
+                <p>بلاغات الغش التجاري وارتفاع الأسعار</p>
+                <div class="link-btn" onclick="selectType('تجارة')">قدّم بلاغ يدوياً ←</div>
+                <button class="card-call-btn" onclick="initiateCall('تجارة', this)">
+                    <i class="fa-solid fa-phone"></i>  اتصل لتقديم البلاغ
+                </button>
+            </div>
+
+            <div class="card" data-type="أمن وسلامة">
+                <div class="icon-circle">
+                    <svg viewBox="0 0 24 24" stroke="#2f855a" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="26" height="26">
+                        <path d="M12 2l8 4v6c0 5-3.5 9.5-8 10-4.5-.5-8-5-8-10V6l8-4z"/>
+                    </svg>
+                </div>
+                <h3>أمن وسلامة</h3>
+                <p>بلاغات المخاطر العامة والسلامة</p>
+                <div class="link-btn" onclick="selectType('أمن وسلامة')">قدّم بلاغ يدوياً ←</div>
+                <button class="card-call-btn" onclick="initiateCall('أمن وسلامة', this)">
+                    <i class="fa-solid fa-phone"></i>  اتصل لتقديم البلاغ
+                </button>
+            </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+    function selectType(type) {
+        window.location.href = '/report/' + encodeURIComponent(type);
+    }
+
+    // Location button
+    const locationBtn = document.getElementById("globalLocationBtn");
+    const locationStatus = document.getElementById("locationStatus");
+
+    if (locationBtn) {
+        locationBtn.addEventListener("click", () => {
+            if (!navigator.geolocation) {
+                locationStatus.innerText = "المتصفح لا يدعم تحديد الموقع.";
+                return;
+            }
+            locationStatus.innerText = "جاري الحصول على الموقع...";
+            navigator.geolocation.getCurrentPosition(
+                async (position) => {
+                    const lat = position.coords.latitude;
+                    const lng = position.coords.longitude;
+                    const response = await fetch("/save-location", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ lat, lng })
+                    });
+                    const data = await response.json();
+                    if (data.success) {
+                        locationStatus.innerHTML = "✅ تم حفظ موقعك بنجاح. يمكنك الآن استخدام مكالمة الهاتف.";
+                    } else {
+                        locationStatus.innerText = "فشل حفظ الموقع، حاول مرة أخرى.";
+                    }
+                },
+                (error) => {
+                    locationStatus.innerText = "تعذر الحصول على الموقع: " + error.message;
+                }
+            );
+        });
+    }
+
+    // Call initiation with spinner
+    async function initiateCall(reportType, button) {
+        const locationStatusText = locationStatus.innerText;
+        if (!locationStatusText.includes("تم حفظ موقعك")) {
+            alert("يرجى أولاً الضغط على 'إرسال الموقع الحالي' والسماح بتحديد الموقع.");
+            return;
+        }
+        const confirmCall = confirm(`سيتم الاتصال برقم هاتفك المسجل لتقديم بلاغ من نوع "${reportType}". هل أنت مستعد؟`);
+        if (!confirmCall) return;
+
+        // Disable button and show spinner
+        const originalHtml = button.innerHTML;
+        button.disabled = true;
+        button.innerHTML = '<span class="spinner"></span> جاري الاتصال...';
+
+        try {
+            const response = await fetch("/initiate-call-report", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ type: reportType })
+            });
+            const data = await response.json();
+            if (response.ok && data.success) {
+                alert(data.message + "\nبعد انتهاء المكالمة، سيتم معالجة التسجيل وسيظهر البلاغ في 'بلاغاتي' خلال دقيقة.");
+                // Optionally, start polling for status update
+                if (data.call_id) {
+                    // You could implement a status check, but not required
+                }
+            } else {
+                alert("خطأ: " + (data.error || "حدث خطأ غير معروف"));
+            }
+        } catch (error) {
+            alert("فشل الاتصال بالخادم: " + error.message);
+        } finally {
+            button.disabled = false;
+            button.innerHTML = originalHtml;
+        }
+    }
+    </script>
+    {% endblock %}

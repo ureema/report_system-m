@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}إشعارات الأدمن{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='style_admin_notifications.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="admin-notifications-page">
+    <div class="admin-notifications-card">
+        <div class="admin-notifications-header">
+            <i class="fa-solid fa-bell"></i>
+            <h1>إشعارات </h1>
+            <p>هنا تظهر رسائل الدعم الجديدة المرسلة من المستخدمين.</p>
+        </div>
+
+        {% if notifications %}
+        <div class="admin-notifications-list">
+            {% for msg in notifications %}
+            <div class="admin-notification-item">
+                <div class="admin-notification-top">
+                    <span class="admin-notification-name">{{ msg.name }}</span>
+                    <span class="admin-notification-status">{{ msg.status }}</span>
+                </div>
+
+                <div class="admin-notification-body">
+                    <p><strong>البريد:</strong> {{ msg.email }}</p>
+                    <p><strong>نوع المشكلة:</strong> {{ msg.issue_type }}</p>
+                    <p><strong>الرسالة:</strong> {{ msg.message }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="admin-empty-box">
+            <i class="fa-solid fa-bell-slash"></i>
+            <p>لا توجد إشعارات حالياً.</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

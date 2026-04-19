@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+
+{% block title %}لوحة البلاغات{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='style_panel.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-page">
+    <div class="dashboard-card">
+
+        <div class="dashboard-header">
+            <i class="fa-solid fa-shield-halved"></i>
+            <h1>لوحة البلاغات</h1>
+            <p>استعراض جميع البلاغات المقدمة وإدارة المستخدمين.</p>
+        </div>
+
+        <div class="tabs">
+            <button class="tab-btn active" onclick="showTab('reports', this)">
+                <i class="fa-solid fa-table-list"></i>
+                البلاغات ({{ reports|length }})
+            </button>
+            <button class="tab-btn" onclick="showTab('users', this)">
+                <i class="fa-solid fa-users"></i>
+                المستخدمون ({{ users|length }})
+            </button>
+        </div>
+
+        <div id="tab-reports" class="tab-content active">
+            {% if reports %}
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>رقم البلاغ</th>
+                            <th>النوع</th>
+                            <th>الوصف</th>
+                            <th>الحالة</th>
+                            <th>التفاصيل</th>
+                            <th>حذف</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for report in reports %}
+                        <tr>
+                            <td>#{{ report.id }}</td>
+                            <td>{{ report.type }}</td>
+                            <td class="description-cell">{{ report.description }}</td>
+                            <td>
+                                {% if report.status == 'جديد' %}
+                                    <span class="status new">جديد</span>
+                                {% elif report.status == 'قيد المعالجة' %}
+                                    <span class="status processing">قيد المعالجة</span>
+                                {% else %}
+                                    <span class="status closed">مغلق</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="{{ url_for('details', report_id=report.id) }}" class="details-btn">عرض</a>
+                            </td>
+                            <td>
+                                <form action="{{ url_for('delete_report', report_id=report.id) }}" method="POST"
+                                      onsubmit="return confirm('هل أنت متأكد من حذف هذا البلاغ؟')">
+                                    <button type="submit" class="delete-btn">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="empty-box">
+                <i class="fa-solid fa-inbox"></i>
+                <p>لا توجد بلاغات حالياً.</p>
+            </div>
+            {% endif %}
+        </div>
+
+        <div id="tab-users" class="tab-content">
+            {% if users %}
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>رقم</th>
+                            <th>الاسم</th>
+                            <th>البريد الإلكتروني</th>
+                            <th>الجوال</th>
+                            <th>الصلاحية</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for u in users %}
+                        <tr>
+                            <td>#{{ u.id }}</td>
+                            <td>{{ u.name }}</td>
+                            <td>{{ u.email }}</td>
+                            <td>{{ u.phone or '—' }}</td>
+                            <td>
+                                {% if u.is_admin %}
+                                    <span class="status processing">أدمن</span>
+                                {% else %}
+                                    <span class="status new">مستخدم</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="empty-box">
+                <i class="fa-solid fa-users-slash"></i>
+                <p>لا يوجد مستخدمون مسجلون.</p>
+            </div>
+            {% endif %}
+        </div>
+
+    </div>
+</div>
+
+<script>
+function showTab(name, btn) {
+    document.querySelectorAll(".tab-content").forEach(t => t.classList.remove("active"));
+    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+    document.getElementById("tab-" + name).classList.add("active");
+    btn.classList.add("active");
+}
+</script>
+{% endblock %}

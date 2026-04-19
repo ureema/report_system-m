@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block title %}الإشعارات{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='style_notifications.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<div class="notifications-page">
+    <div class="notifications-card">
+
+        <div class="notifications-header">
+            <i class="fa-solid fa-bell"></i>
+            <h1>الإشعارات</h1>
+            <p>هنا تظهر لك جميع ردود الدعم الخاصة بك</p>
+        </div>
+
+        {% if notifications %}
+        <div class="notifications-list">
+
+            {% for msg in notifications %}
+            <div class="notification-item">
+
+                <!-- أيقونة -->
+                <div class="notification-icon">
+                    {% if "تقنية" in msg.issue_type %}
+                        <i class="fa-solid fa-laptop"></i>
+                    {% elif "بلاغ" in msg.issue_type %}
+                        <i class="fa-solid fa-flag"></i>
+                    {% elif "حساب" in msg.issue_type %}
+                        <i class="fa-solid fa-user"></i>
+                    {% else %}
+                        <i class="fa-solid fa-bell"></i>
+                    {% endif %}
+                </div>
+
+                <!-- أعلى الكارد -->
+                <div class="notification-top">
+                    <span class="notification-type">
+                        {{ msg.issue_type }}
+                    </span>
+
+                    <span class="notification-status">
+                        {{ msg.status }}
+                    </span>
+                </div>
+
+                <!-- المحتوى -->
+                <div class="notification-body">
+                    <p><strong>رسالتك:</strong> {{ msg.message }}</p>
+
+                    {% if msg.reply %}
+                    <p class="notification-reply">
+                        <strong>رد الدعم:</strong> {{ msg.reply }}
+                    </p>
+                    {% endif %}
+                </div>
+
+            </div>
+            {% endfor %}
+
+        </div>
+
+        {% else %}
+        <div class="empty-box">
+            <i class="fa-solid fa-bell-slash"></i>
+            <p>لا توجد إشعارات حالياً</p>
+        </div>
+        {% endif %}
+
+    </div>
+</div>
+
+{% endblock %}

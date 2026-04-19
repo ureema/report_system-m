@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block title %}تم إرسال البلاغ{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='style_report.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<div class="success-page">
+
+    <div class="success-card">
+
+        <div class="success-icon">
+            <i class="fa-solid fa-check"></i>
+        </div>
+
+        <h2 class="success-title">تم إرسال بلاغك بنجاح</h2>
+
+        <p class="success-text">
+            شكرًا لك، سيتم مراجعة البلاغ من الجهة المختصة في أقرب وقت.
+        </p>
+
+        <div class="success-actions">
+
+            <a href="{{ url_for('report_page') }}" class="main-btn">
+                إرسال بلاغ جديد
+            </a>
+
+            <a href="{{ url_for('my_reports') }}" class="secondary-btn">
+                عرض بلاغاتي
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <div class="reports-history">
+
+        <h3>بلاغاتي السابقة</h3>
+
+        {% if reports %}
+
+        <div class="history-grid">
+
+            {% for report in reports %}
+
+            <div class="history-card">
+
+                <div class="history-top">
+
+                    <span class="report-number">
+                        بلاغ #{{ report.id }}
+                    </span>
+
+                    {% if report.status == "جديد" %}
+                        <span class="status-badge new">جديد</span>
+
+                    {% elif report.status == "قيد المعالجة" %}
+                        <span class="status-badge processing">قيد المعالجة</span>
+
+                    {% else %}
+                        <span class="status-badge closed">مغلق</span>
+                    {% endif %}
+
+                </div>
+
+                <div class="history-body">
+
+                    <p>
+                        <strong>نوع البلاغ:</strong>
+                        {{ report.type }}
+                    </p>
+
+                    <p>
+                        <strong>الوصف:</strong>
+                        {{ report.description }}
+                    </p>
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+        {% else %}
+
+        <div class="empty-history">
+            لا توجد بلاغات سابقة حتى الآن.
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block title %}عن المنصة{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='style_about_us.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<section class="abligh-section">
+    <div class="abligh-container">
+
+        <div class="abligh-subtitle">عن المنصة</div>
+        <h1 class="abligh-title">منصة أبلغ</h1>
+
+        <p class="abligh-text">
+            منصة "أبلغ" هي منصة رقمية تهدف إلى تسهيل تقديم البلاغات
+            الخدمية لأفراد المجتمع دون الحاجة لمعرفة الجهة المختصة،
+            حيث يتم توجيه البلاغ تلقائياً إلى المسار الصحيح.
+        </p>
+
+        <p class="abligh-text">
+            كما تساعد الجهات الخدمية على استقبال البلاغات بشكل منظم،
+            مما يسرّع المعالجة ويقلل الأخطاء ويرفع جودة الخدمات المقدمة.
+        </p>
+
+    </div>
+</section>
+
+<section class="abligh-section">
+    <div class="abligh-container">
+
+        <div class="abligh-subtitle">آلية العمل</div>
+        <h1 class="abligh-title">كيف تعمل منصة أبلغ</h1>
+
+        <div class="abligh-steps">
+
+            <div class="abligh-card">
+                <div class="abligh-number">1</div>
+                <div class="abligh-step-title">تقديم البيانات</div>
+                <div class="abligh-desc">
+                    إدخال تفاصيل البلاغ عبر النموذج الرقمي بدقة.
+                </div>
+            </div>
+
+            <div class="abligh-card">
+                <div class="abligh-number">2</div>
+                <div class="abligh-step-title">المراجعة الأولية</div>
+                <div class="abligh-desc">
+                    التحقق من اكتمال البيانات وتنظيمها.
+                </div>
+            </div>
+
+            <div class="abligh-card">
+                <div class="abligh-number">3</div>
+                <div class="abligh-step-title">تحديد الجهة</div>
+                <div class="abligh-desc">
+                    توجيه البلاغ للجهة المناسبة.
+                </div>
+            </div>
+
+            <div class="abligh-card">
+                <div class="abligh-number">4</div>
+                <div class="abligh-step-title">اكتمال الخدمة</div>
+                <div class="abligh-desc">
+                    تسليم الصياغة وخطوات التقديم.
+                </div>
+            </div>
+
+            <div class="abligh-card">
+                <div class="abligh-number">5</div>
+               <div class="abligh-step-title">متابعة البلاغ</div>
+<div class="abligh-desc">
+    يتم متابعة حالة البلاغ حتى معالجته من الجهة المختصة.
+</div>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+{% endblock %}

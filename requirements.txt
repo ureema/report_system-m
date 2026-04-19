@@ -1,0 +1,12 @@
+Flask
+Flask-SQLAlchemy
+SQLAlchemy
+Werkzeug
+Flask-Mail
+itsdangerous
+twilio
+assemblyai
+requests
+python-dotenv
+openai-whisper
+torch

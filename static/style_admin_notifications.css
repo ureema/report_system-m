@@ -1,0 +1,147 @@
+.admin-notifications-page{
+    width:92%;
+    max-width:950px;
+    margin:40px auto;
+}
+
+.admin-notifications-card{
+    background:#ffffff;
+    border-radius:24px;
+    padding:30px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.08);
+    border:1px solid #edf7ee;
+}
+
+.admin-notifications-header{
+    text-align:center;
+    margin-bottom:35px;
+}
+
+.admin-notifications-header i{
+    font-size:32px;
+    color:#2e7d32;
+    margin-bottom:10px;
+}
+
+.admin-notifications-header h1{
+    color:#1b5e20;
+    font-size:30px;
+    font-weight:800;
+    margin-bottom:8px;
+}
+
+.admin-notifications-header p{
+    color:#667085;
+    font-size:14px;
+}
+
+.admin-notifications-list{
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+}
+
+.admin-notification-item{
+    background:#f9fdf9;
+    border-radius:18px;
+    padding:20px;
+    border-right:5px solid #38a169;
+    box-shadow:0 6px 16px rgba(0,0,0,0.05);
+    transition:0.3s ease;
+}
+
+.admin-notification-item:hover{
+    transform:translateY(-4px);
+    box-shadow:0 12px 24px rgba(0,0,0,0.08);
+}
+
+.admin-notification-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:12px;
+    flex-wrap:wrap;
+    gap:10px;
+}
+
+.admin-notification-name{
+    font-weight:800;
+    color:#2f855a;
+    font-size:15px;
+}
+
+.admin-notification-status{
+    background:#e8f5e9;
+    color:#2f855a;
+    padding:6px 12px;
+    border-radius:999px;
+    font-size:12px;
+    font-weight:700;
+}
+
+.admin-notification-body p{
+    margin-bottom:10px;
+    color:#444;
+    line-height:1.8;
+    font-size:14px;
+}
+
+.admin-empty-box{
+    text-align:center;
+    padding:50px 20px;
+    color:#888;
+}
+
+.admin-empty-box i{
+    font-size:40px;
+    margin-bottom:15px;
+    color:#2e7d32;
+}
+
+/* ===== DARK MODE ===== */
+
+html[data-theme="dark"] .admin-notifications-card{
+    background:#1b2a1f;
+    border:1px solid rgba(74,222,128,0.20);
+    box-shadow:0 18px 40px rgba(0,0,0,0.32);
+}
+
+html[data-theme="dark"] .admin-notifications-header h1,
+html[data-theme="dark"] .admin-notifications-header i,
+html[data-theme="dark"] .admin-notification-name{
+    color:#4ade80;
+}
+
+html[data-theme="dark"] .admin-notifications-header p,
+html[data-theme="dark"] .admin-notification-body p,
+html[data-theme="dark"] .admin-empty-box{
+    color:#d1fae5;
+}
+
+html[data-theme="dark"] .admin-notification-item{
+    background:#132117;
+    border-right:5px solid #22c55e;
+    border-top:1px solid rgba(74,222,128,0.12);
+    border-left:1px solid rgba(74,222,128,0.12);
+    border-bottom:1px solid rgba(74,222,128,0.12);
+    box-shadow:0 8px 24px rgba(0,0,0,0.30);
+}
+
+html[data-theme="dark"] .admin-notification-status{
+    background:rgba(74,222,128,0.14);
+    color:#bbf7d0;
+}
+
+html[data-theme="dark"] .admin-empty-box i{
+    color:#4ade80;
+}
+
+@media (max-width:700px){
+    .admin-notifications-card{
+        padding:22px 16px;
+    }
+
+    .admin-notifications-header h1{
+        font-size:24px;
+    }
+}

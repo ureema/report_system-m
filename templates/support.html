@@ -1,0 +1,157 @@
+{% extends "base.html" %}
+
+{% block title %}الدعم والتواصل{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='style_support.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<div class="support-page">
+
+    <div class="support-header">
+        <i class="fa-solid fa-headset"></i>
+        <h1>الدعم والتواصل</h1>
+        <p>نحن هنا لمساعدتك في أي وقت 💚</p>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="support-messages">
+          {% for category, message in messages %}
+            <div class="flash-message {{ category }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <div class="support-grid">
+
+        <div class="support-info">
+            <div class="info-card">
+                <i class="fa-solid fa-envelope"></i>
+                <h3>البريد</h3>
+                <p>ablgah.official@gmail.com</p>
+            </div>
+
+            <div class="info-card">
+                <i class="fa-solid fa-phone"></i>
+                <h3>الهاتف</h3>
+                <p>0560054462</p>
+            </div>
+
+            <div class="info-card">
+                <i class="fa-solid fa-clock"></i>
+                <h3>ساعات العمل</h3>
+                <p>أحد–خميس 8ص–4م</p>
+            </div>
+
+            <div class="info-card">
+                <i class="fa-solid fa-location-dot"></i>
+                <h3>الموقع</h3>
+                <p>المملكة العربية السعودية</p>
+            </div>
+        </div>
+
+        <div class="support-form">
+            <h2>أرسل لنا رسالة</h2>
+
+            <form method="POST" action="{{ url_for('support_page') }}">
+
+                <div class="form-group">
+                    <input type="text" name="name" placeholder="الاسم"
+                           value="{{ current_user.name if current_user else '' }}" required>
+                </div>
+
+                <div class="form-group">
+                    <input type="email" name="email" placeholder="البريد الإلكتروني"
+                           value="{{ current_user.email if current_user else '' }}" required>
+                </div>
+
+                <div class="form-group">
+                    <select name="issue_type" required>
+                       <option value="">اختر نوع المشكلة</option>
+                       <option value="مشكلة تقنية">مشكلة تقنية</option>
+                       <option value="مشكلة في البلاغ">مشكلة في البلاغ</option>
+                       <option value="مشكلة في الحساب">مشكلة في الحساب</option>
+                       <option value="أخرى">أخرى</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <textarea name="message" placeholder="اكتب رسالتك..." required></textarea>
+                </div>
+
+                <button type="submit" class="submit-btn">
+                    إرسال الرسالة
+                </button>
+
+            </form>
+        </div>
+
+    </div>
+
+    <div class="faq-card">
+        <h2>الأسئلة الشائعة</h2>
+        <div class="faq-grid">
+            <div class="faq-item">
+                <div class="faq-q">كيف أرسل بلاغًا؟</div>
+                <div class="faq-a">بعد تسجيل الدخول اضغط على "إرسال بلاغ" واختر النوع ثم اكتبي الوصف.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-q">كيف أتابع حالة بلاغي؟</div>
+                <div class="faq-a">من صفحة "بلاغاتي" ستظهر جميع البلاغات وحالتها الحالية.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-q">كم يستغرق معالجة البلاغ؟</div>
+                <div class="faq-a">غالبًا تتم المراجعة خلال 3–5 أيام عمل حسب نوع البلاغ.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-q">نسيت كلمة المرور؟</div>
+                <div class="faq-a">من صفحة الدخول اضغطي على "نسيت كلمة المرور" وأدخلي بريدك الإلكتروني.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-q">هل يمكن تعديل البلاغ؟</div>
+                <div class="faq-a">بعد الإرسال لا يمكن التعديل مباشرة، ويمكنك التواصل معنا للمساعدة.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-q">متى يتم الرد على رسالتي؟</div>
+                <div class="faq-a">عادة يتم الرد خلال يوم عمل واحد من داخل المنصة.</div>
+            </div>
+        </div>
+    </div>
+
+    {% if user_messages %}
+    <div class="user-history-card">
+        <h2>رسائلي السابقة</h2>
+
+        <div class="user-history-list">
+            {% for msg in user_messages %}
+            <div class="history-item">
+                <div class="history-top">
+                    <span class="history-type">{{ msg.issue_type }}</span>
+                    <span class="history-status">{{ msg.status }}</span>
+                </div>
+
+                <div class="history-body">
+                    <p><strong>رسالتك:</strong> {{ msg.message }}</p>
+
+                    {% if msg.reply %}
+                    <p class="history-reply"><strong>رد الدعم:</strong> {{ msg.reply }}</p>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+</div>
+
+{% endblock %}

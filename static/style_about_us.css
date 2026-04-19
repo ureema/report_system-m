@@ -1,0 +1,101 @@
+.abligh-container{
+    max-width:850px;
+    margin:auto;
+    padding:60px 20px;
+}
+
+.abligh-section{
+    margin-bottom:50px;
+}
+
+.abligh-title{
+    font-size:38px;
+    color:#1b5e20;
+    text-align:center;
+    margin-bottom:15px;
+    font-weight:800;
+}
+
+.abligh-subtitle{
+    text-align:center;
+    color:#2e7d32;
+    font-weight:700;
+    margin-bottom:10px;
+}
+
+.abligh-text{
+    text-align:center;
+    line-height:2;
+    color:#555;
+    margin-bottom:15px;
+}
+
+.abligh-steps{
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+    margin-top:25px;
+}
+
+.abligh-card{
+    background:white;
+    padding:22px;
+    border-radius:16px;
+    box-shadow:0 8px 18px rgba(0,0,0,0.07);
+    transition:0.3s;
+}
+
+.abligh-card:hover{
+    transform:translateY(-5px);
+}
+
+.abligh-number{
+    font-weight:800;
+    color:#2e7d32;
+    margin-bottom:6px;
+    font-size:18px;
+}
+
+.abligh-step-title{
+    font-size:18px;
+    color:#1b5e20;
+    font-weight:700;
+    margin-bottom:6px;
+}
+
+.abligh-desc{
+    color:#666;
+    line-height:1.9;
+}
+
+/* ===== DARK MODE - ABLIGH ===== */
+
+html[data-theme="dark"] .abligh-title{
+    color:#4ade80;
+}
+
+html[data-theme="dark"] .abligh-subtitle{
+    color:#22c55e;
+}
+
+html[data-theme="dark"] .abligh-text{
+    color:#d1fae5;
+}
+
+html[data-theme="dark"] .abligh-card{
+    background:#1b2a1f;
+    border:1px solid rgba(74,222,128,0.20);
+    box-shadow:0 8px 24px rgba(0,0,0,0.30);
+}
+
+html[data-theme="dark"] .abligh-number{
+    color:#4ade80;
+}
+
+html[data-theme="dark"] .abligh-step-title{
+    color:#bbf7d0;
+}
+
+html[data-theme="dark"] .abligh-desc{
+    color:#a7f3d0;
+}

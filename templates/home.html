@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block title %}أبلغ{% endblock %}
+
+{% block content %}
+<div class="video-hero">
+
+    <video autoplay muted loop playsinline class="bg-video">
+        <source src="{{ url_for('static', filename='videos/bg.mp4') }}" type="video/mp4">
+    </video>
+
+    <div class="video-overlay"></div>
+
+    <section class="hero-section">
+        <div class="hero-content">
+
+            <span class="hero-badge">منصة لإدارة البلاغات</span>
+
+            <h1>
+             إدارة البلاغات
+                <span>ومتابعة حالتها</span>
+            </h1>
+
+            <p>
+                يوفّر نظام أبلغ وسيلة منظمة وآمنة لاستقبال البلاغات،
+                ومتابعتها، واستعراض حالتها بصورة واضحة تساعد على تحسين جودة الخدمات.
+            </p>
+
+            <a href="{{ url_for('report_page') }}" class="hero-btn">
+                       قدّم بلاغك الآن            </a>
+
+        </div>
+    </section>
+
+    <section class="features-section">
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i class="fa-solid fa-file-circle-plus"></i>
+            </div>
+            <h3>تقديم البلاغات</h3>
+            <p>
+                يتيح النظام للمستخدم رفع البلاغات بصورة واضحة ومنظمة مع سهولة إدخال البيانات الأساسية.
+            </p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i class="fa-solid fa-clipboard-check"></i>
+            </div>
+            <h3>متابعة الحالة</h3>
+            <p>
+                يمكن للمستخدم متابعة حالة البلاغ من لحظة إنشائه حتى مراجعته أو إغلاقه من الجهة المختصة.
+            </p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i class="fa-solid fa-shield-heart"></i>
+            </div>
+            <h3>تنظيم موثوق</h3>
+            <p>
+                يوفّر النظام عرضًا منظمًا للبلاغات والنتائج بما يعزز الكفاءة والوضوح وسهولة الإدارة.
+            </p>
+        </div>
+    </section>
+
+</div>
+
+<script>
+window.addEventListener("load", () => {
+    const tooltip = document.querySelector(".ai-tooltip");
+
+    if (tooltip) {
+        tooltip.style.opacity = "1";
+
+        setTimeout(() => {
+            tooltip.style.opacity = "0";
+        }, 4000);
+    }
+});
+</script>
+{% endblock %}

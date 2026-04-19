@@ -1,0 +1,143 @@
+.about-wrapper{
+    max-width:900px;
+    margin:0 auto;
+    padding:40px 20px;
+}
+
+/* الهيدر */
+.about-hero{
+    text-align:center;
+    padding:55px 30px;
+    border-radius:24px;
+
+    background:linear-gradient(135deg,#f8fff9,#eef8ef);
+    border:1px solid #e4f2e6;
+
+    box-shadow:0 15px 40px rgba(46,125,50,0.08);
+    margin-bottom:30px;
+}
+
+.about-hero h1{
+    color:#1b5e20;
+    font-size:36px;
+    margin-bottom:12px;
+    font-weight:800;
+}
+
+.about-hero p{
+    color:#5f6f64;
+    font-size:16px;
+}
+
+/* البوكسات */
+.about-section{
+    background:#ffffff;
+    border-radius:20px;
+    padding:28px;
+
+    border:1px solid #edf7ee;
+    box-shadow:0 10px 28px rgba(46,125,50,0.08);
+
+    margin-bottom:20px;
+    transition:0.3s ease;
+}
+
+.about-section:hover{
+    transform:translateY(-4px);
+    box-shadow:0 18px 40px rgba(46,125,50,0.12);
+}
+
+.about-section h2{
+    color:#2e7d32;
+    margin-bottom:14px;
+    font-size:19px;
+    font-weight:800;
+}
+
+.about-section p{
+    color:#667085;
+    line-height:1.9;
+    font-size:14px;
+}
+
+/* القائمة */
+.about-list{
+    padding-right:18px;
+    line-height:2;
+    color:#667085;
+}
+
+.about-list li{
+    margin-bottom:6px;
+}
+
+/* التاقات */
+.tags-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+}
+
+.tag{
+    background:#eef8ef;
+    color:#2e7d32;
+    padding:7px 14px;
+    border-radius:20px;
+    font-size:13px;
+    font-weight:700;
+
+    transition:0.25s ease;
+}
+
+.tag:hover{
+    background:#2e7d32;
+    color:white;
+    transform:scale(1.05);
+}
+/* ===== DARK MODE - ABOUT (من نحن) ===== */
+
+html[data-theme="dark"] .about-hero{
+    background: linear-gradient(135deg, #132e22, #0f241a);
+    border: 1px solid rgba(74,222,128,0.20);
+    box-shadow: 0 18px 40px rgba(0,0,0,0.30);
+}
+
+html[data-theme="dark"] .about-hero h1{
+    color: #4ade80;
+}
+
+html[data-theme="dark"] .about-hero p{
+    color: #d1fae5;
+}
+
+/* البوكسات */
+html[data-theme="dark"] .about-section{
+    background: #1b2a1f;
+    border: 1px solid rgba(74,222,128,0.20);
+    box-shadow: 0 10px 28px rgba(0,0,0,0.30);
+}
+
+html[data-theme="dark"] .about-section h2{
+    color: #4ade80;
+}
+
+html[data-theme="dark"] .about-section p{
+    color: #d1fae5;
+}
+
+/* القائمة */
+html[data-theme="dark"] .about-list{
+    color: #d1fae5;
+}
+
+/* التاقات */
+html[data-theme="dark"] .tag{
+    background: rgba(74,222,128,0.12);
+    color: #bbf7d0;
+    border: 1px solid rgba(74,222,128,0.18);
+}
+
+html[data-theme="dark"] .tag:hover{
+    background: #22c55e;
+    color: #062514;
+}

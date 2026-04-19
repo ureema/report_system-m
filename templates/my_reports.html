@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block title %}بلاغاتي{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='style_my_reports.css') }}">
+
+{% endblock %}
+
+{% block content %}
+<div class="reports-page">
+    <div class="reports-card">
+
+        <div class="reports-header">
+            <i class="fa-solid fa-folder-open"></i>
+            <h1>بلاغاتي</h1>
+            <p>يمكنك من هنا متابعة جميع البلاغات الخاصة بك وحالتها الحالية.</p>
+        </div>
+
+        {% if reports %}
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>رقم البلاغ</th>
+                        <th>نوع البلاغ</th>
+                        <th>الوصف</th>
+                        <th>الحالة</th>
+                        <th>التفاصيل</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for report in reports %}
+                    <tr>
+                        <td>
+                            #{{ report.id }}
+                            {% if report.is_call %}
+                            <span class="call-badge">📞 هاتفي</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ report.type }}</td>
+                        <td class="description-cell">{{ report.description }}</td>
+                        <td>
+                            {% if report.status == "جديد" %}
+                                <span class="status new">جديد</span>
+                            {% elif report.status == "قيد المعالجة" %}
+                                <span class="status processing">قيد المعالجة</span>
+                            {% else %}
+                                <span class="status closed">مغلق</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if report.is_call %}
+                                <a href="{{ url_for('call_report_details', call_id=report.call_id) }}" class="details-btn">
+                                    عرض التفاصيل
+                                </a>
+                            {% else %}
+                                <a href="{{ url_for('details', report_id=report.id) }}" class="details-btn">
+                                    عرض
+                                </a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="empty-box">
+            <i class="fa-solid fa-inbox"></i>
+            <p>لا توجد لديك بلاغات حتى الآن.</p>
+        </div>
+        {% endif %}
+
+        <div class="page-actions">
+            <a href="{{ url_for('report_page') }}" class="action-btn primary">تقديم بلاغ جديد</a>
+            <a href="{{ url_for('home') }}" class="action-btn secondary">العودة للرئيسية</a>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
