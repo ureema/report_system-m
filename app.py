@@ -832,7 +832,6 @@ def save_location():
         session["temp_lng"] = lng
         return jsonify({"success": True})
     return jsonify({"success": False}), 400
-
 @app.route("/initiate-call-report", methods=["POST"])
 @login_required
 def initiate_call_report():
@@ -855,12 +854,9 @@ def initiate_call_report():
 
         user_phone = normalize_phone(user.phone)
 
+        print("=== INITIATE CALL REPORT ===")
         print("USER PHONE FROM PROFILE:", user.phone)
         print("NORMALIZED USER PHONE:", user_phone)
-
-print("=== INITIATE CALL REPORT ===")
-print("USER PHONE FROM PROFILE:", user.phone)
-print("NORMALIZED USER PHONE:", user_phone)
 
         if not user_phone:
             return jsonify({"error": "رقم الهاتف غير صالح. يرجى تحديثه بصيغة دولية."}), 400
@@ -885,10 +881,9 @@ print("NORMALIZED USER PHONE:", user_phone)
 
         base_url = PUBLIC_BASE_URL if PUBLIC_BASE_URL else request.url_root.rstrip("/")
         webhook_url = f"{base_url}/voice-incoming?report_id={call_report.id}"
-        
-print("TWILIO FROM NUMBER:", TWILIO_PHONE_NUMBER)
-print("WEBHOOK URL:", webhook_url)
 
+        print("TWILIO FROM NUMBER:", TWILIO_PHONE_NUMBER)
+        print("WEBHOOK URL:", webhook_url)
 
         call = twilio_client.calls.create(
             url=webhook_url,
@@ -1139,11 +1134,12 @@ def emergency_voice_report():
 
         try:
             agent_number = normalize_phone(SUPPORT_AGENT_NUMBER)
-print("SUPPORT_AGENT_NUMBER RAW:", SUPPORT_AGENT_NUMBER)
-print("SUPPORT_AGENT_NUMBER NORMALIZED:", agent_number)
-print("TWILIO FROM NUMBER:", TWILIO_PHONE_NUMBER)
-
             print("=== EMERGENCY VOICE REPORT ===")
+
+            print("SUPPORT_AGENT_NUMBER RAW:", SUPPORT_AGENT_NUMBER)
+            print("SUPPORT_AGENT_NUMBER NORMALIZED:", agent_number)
+            print("TWILIO FROM NUMBER:", TWILIO_PHONE_NUMBER)
+
             call = twilio_client.calls.create(
                 to=agent_number,
                 from_=TWILIO_PHONE_NUMBER,
