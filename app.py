@@ -41,21 +41,29 @@ load_dotenv()
 def normalize_phone(phone: str) -> str:
     if not phone:
         return ""
+
     digits = re.sub(r"\D", "", phone)
+
     if not digits:
         return ""
-    if phone.startswith("+") and len(digits) >= 10:
-        return phone
-    if digits.startswith("00962"):
-        digits = digits[2:]
-    elif digits.startswith("962"):
-        digits = "962" + digits[3:] if len(digits) > 3 else digits
-    elif digits.startswith("0"):
-        digits = "962" + digits[1:]
-    else:
-        digits = "962" + digits
-    return f"+{digits}"
 
+    # إذا الرقم أصلاً بصيغة دولية (+966...)
+    if phone.startswith("+") and len(digits) >= 10:
+        return f"+{digits}"
+
+    if digits.startswith("00966"):
+        digits = digits[2:]   # تصير 966...
+    elif digits.startswith("966"):
+        digits = digits       # خليه زي ما هو
+    elif digits.startswith("05"):
+        digits = "966" + digits[1:]
+    elif digits.startswith("5"):
+        digits = "966" + digits
+    else:
+        return ""  # رقم غير معروف
+
+    return f"+{digits}"
+    
 # ------------------------------
 # App Configuration
 # ------------------------------
