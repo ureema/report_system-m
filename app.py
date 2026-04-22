@@ -1172,6 +1172,24 @@ def emergency_voice_report():
 
     return jsonify(response_data)
 
+
+@app.route("/ai-chat", methods=["POST"])
+@login_required
+def ai_chat():
+    data = request.get_json()
+    message = data.get("message", "").strip()
+
+    if not message:
+        return jsonify({"reply": "اكتبي شيء أول"}), 400
+
+    category = classify_problem(message)
+
+    return jsonify({
+        "reply": f"تم فهم البلاغ: {category}",
+        "clean_description": message,
+        "report_type": category
+    })
+
 # ------------------------------
 # Database initialization
 # ------------------------------
