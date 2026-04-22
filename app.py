@@ -226,19 +226,87 @@ def get_current_user():
     if "user_id" in session:
         return db.session.get(User, session["user_id"])
     return None
-
+    
 def classify_problem(transcript):
     t = transcript.lower()
-    if any(word in t for word in ["حريق", "fire", "flame", "burning"]):
+
+    # حريق
+    if any(word in t for word in [
+        "حريق", "نار", "دخان", "احتراق",
+        "fire", "flame", "burning", "smoke"
+    ]):
         return "حريق"
-    if any(word in t for word in ["حادث", "accident", "crash", "collision"]):
+
+    # انفجار
+    if any(word in t for word in [
+        "انفجار", "انفجر", "تفجير",
+        "explosion", "blast", "bomb"
+    ]):
+        return "انفجار"
+
+    # انهيار
+    if any(word in t for word in [
+        "انهيار", "انهدم", "سقط", "طيح البيت",
+        "collapse", "building fell", "structure collapse"
+    ]):
+        return "انهيار"
+
+    # حادث
+    if any(word in t for word in [
+        "حادث", "صدم", "دهس", "انقلاب",
+        "accident", "crash", "collision"
+    ]):
         return "حادث"
-    if any(word in t for word in ["نزيف", "bleeding", "blood"]):
+
+    # نزيف
+    if any(word in t for word in [
+        "نزيف", "دم", "جرح",
+        "bleeding", "blood", "injury"
+    ]):
         return "نزيف"
-    if any(word in t for word in ["سرقة", "theft", "robbery", "steal"]):
-        return "سرقة"
-    if any(word in t for word in ["شجار", "fight", "quarrel"]):
+
+    # كهرباء
+    if any(word in t for word in [
+        "كهرباء", "تماس", "صعق", "ماس كهربائي",
+        "electric", "shock", "electrocution"
+    ]):
+        return "كهرباء"
+
+    # اختناق
+    if any(word in t for word in [
+        "اختناق", "ما اقدر اتنفس", "خانق",
+        "choking", "suffocation"
+    ]):
+        return "اختناق"
+
+    # غرق
+    if any(word in t for word in [
+        "غرق", "يغرق",
+        "drowning"
+    ]):
+        return "غرق"
+
+    # طلب مساعدة / استغاثة
+    if any(word in t for word in [
+        "الحقوني", "ساعدوني", "نجدة", "ابي مساعده", "استغاثه",
+        "help", "help me", "emergency"
+    ]):
+        return "استغاثة"
+
+    # شجار
+    if any(word in t for word in [
+        "شجار", "مضاربة", "عراك",
+        "fight", "assault"
+    ]):
         return "شجار"
+
+    # سرقة
+    if any(word in t for word in [
+        "سرقة", "سرقني", "لص",
+        "theft", "robbery"
+    ]):
+        return "سرقة"
+
     return "عام"
 
 @app.context_processor
@@ -1172,7 +1240,6 @@ def emergency_voice_report():
 
     return jsonify(response_data)
 
-
 @app.route("/ai-chat", methods=["POST"])
 @login_required
 def ai_chat():
@@ -1180,14 +1247,56 @@ def ai_chat():
     message = data.get("message", "").strip()
 
     if not message:
-        return jsonify({"reply": "اكتبي شيء أول"}), 400
+        return jsonify({
+            "reply": "اكتب تفاصيل البلاغ حتى أقدر أساعدك.",
+            "clean_description": "",
+            "report_type": "عام",
+            "saved": False
+        }), 400
 
     category = classify_problem(message)
+    user = get_current_user()
+
+    emergency_types = ["حريق", "حادث", "نزيف", "كهرباء", "اختناق", "غرق", "انفجار", "انهيار", "استغاثة", "شجار"]
+
+    if category in emergency_types:
+        reply = (
+            f"فهمت من كلامك أن البلاغ يتعلق بـ {category}. "
+            f"هذا النوع يعتبر حالة طارئة. "
+            f"تم تجهيز وصف البلاغ، وأفضل خطوة الآن هي إرسال البلاغ فورًا أو استخدام التسجيل الصوتي للطوارئ."
+        )
+    elif category == "سرقة":
+        reply = (
+            "يبدو أن البلاغ يتعلق بحالة سرقة. "
+            "تم تجهيز وصف البلاغ، ويمكنك الآن إرساله ليتم تسجيله بشكل صحيح."
+        )
+    else:
+        reply = (
+            "فهمت تفاصيل البلاغ، لكنه لا يبدو طارئًا بشكل مباشر. "
+            "تم تجهيز وصف البلاغ ويمكنك إرساله كبلاغ عادي."
+        )
+
+    saved = False
+
+    # إذا تبينين البوت يحفظ البلاغ النصي مباشرة
+    if user and message:
+        new_report = Report(
+            type=category if category else "عام",
+            description=message,
+            status="جديد",
+            user_id=user.id
+        )
+        db.session.add(new_report)
+        db.session.commit()
+        saved = True
+
+        reply += " تم تسجيل البلاغ بنجاح في النظام."
 
     return jsonify({
-        "reply": f"تم فهم البلاغ: {category}",
+        "reply": reply,
         "clean_description": message,
-        "report_type": category
+        "report_type": category,
+        "saved": saved
     })
 
 # ------------------------------
