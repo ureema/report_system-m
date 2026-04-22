@@ -226,7 +226,7 @@ def get_current_user():
     if "user_id" in session:
         return db.session.get(User, session["user_id"])
     return None
-    
+
 def classify_problem(transcript):
     t = transcript.lower()
 
@@ -1239,7 +1239,7 @@ def emergency_voice_report():
             response_data["call_error"] = "خدمة المكالمات غير متاحة"
 
     return jsonify(response_data)
-
+    
 @app.route("/ai-chat", methods=["POST"])
 @login_required
 def ai_chat():
@@ -1254,49 +1254,151 @@ def ai_chat():
             "saved": False
         }), 400
 
-    category = classify_problem(message)
     user = get_current_user()
-
     emergency_types = ["حريق", "حادث", "نزيف", "كهرباء", "اختناق", "غرق", "انفجار", "انهيار", "استغاثة", "شجار"]
 
+    # إذا كان ينتظر تأكيد من المستخدم
+    pending_emergency = session.get("pending_emergency")
+    pending_message = session.get("pending_message")
+    pending_category = session.get("pending_category")
+
+    if pending_emergency:
+        if message in ["نعم", "اي", "أيوه", "ايوه", "yes", "y"]:
+            saved = False
+
+            # حفظ البلاغ أولاً
+            new_report = Report(
+                type=pending_category if pending_category else "عام",
+                description=pending_message,
+                status="جديد",
+                user_id=user.id
+            )
+            db.session.add(new_report)
+            db.session.commit()
+            saved = True
+
+            # الاتصال الطارئ
+            if SUPPORT_AGENT_NUMBER and twilio_client:
+                try:
+                    agent_number = normalize_phone(SUPPORT_AGENT_NUMBER)
+                    message_body = (
+                        f"تنبيه طارئ من منصة أبلغ. "
+                        f"تم تسجيل بلاغ من نوع {pending_category}. "
+                        f"تفاصيل البلاغ: {pending_message[:150]}."
+                    )
+
+                    twiml_response = (
+                        f'<?xml version="1.0" encoding="UTF-8"?>'
+                        f'<Response>'
+                        f'<Say voice="{ARABIC_VOICE}" language="{ARABIC_LANG}">{message_body}</Say>'
+                        f'</Response>'
+                    )
+
+                    call = twilio_client.calls.create(
+                        to=agent_number,
+                        from_=TWILIO_PHONE_NUMBER,
+                        twiml=twiml_response
+                    )
+
+                    session.pop("pending_emergency", None)
+                    session.pop("pending_message", None)
+                    session.pop("pending_category", None)
+
+                    return jsonify({
+                        "reply": "تم تأكيد الحالة الطارئة، وتسجيل البلاغ، وإرسال الاتصال بنجاح.",
+                        "clean_description": pending_message,
+                        "report_type": pending_category,
+                        "saved": saved,
+                        "call_initiated": True,
+                        "call_sid": call.sid
+                    })
+
+                except Exception as e:
+                    session.pop("pending_emergency", None)
+                    session.pop("pending_message", None)
+                    session.pop("pending_category", None)
+
+                    return jsonify({
+                        "reply": f"تم تسجيل البلاغ، لكن تعذر إجراء الاتصال الطارئ. السبب: {str(e)}",
+                        "clean_description": pending_message,
+                        "report_type": pending_category,
+                        "saved": saved,
+                        "call_initiated": False
+                    })
+
+            session.pop("pending_emergency", None)
+            session.pop("pending_message", None)
+            session.pop("pending_category", None)
+
+            return jsonify({
+                "reply": "تم تسجيل البلاغ، لكن خدمة الاتصال غير متاحة حالياً.",
+                "clean_description": pending_message,
+                "report_type": pending_category,
+                "saved": saved,
+                "call_initiated": False
+            })
+
+        elif message in ["لا", "لأ", "لا شكرا", "no", "n"]:
+            new_report = Report(
+                type=pending_category if pending_category else "عام",
+                description=pending_message,
+                status="جديد",
+                user_id=user.id
+            )
+            db.session.add(new_report)
+            db.session.commit()
+
+            session.pop("pending_emergency", None)
+            session.pop("pending_message", None)
+            session.pop("pending_category", None)
+
+            return jsonify({
+                "reply": "تم تسجيل البلاغ بدون تفعيل الاتصال الطارئ.",
+                "clean_description": pending_message,
+                "report_type": pending_category,
+                "saved": True,
+                "call_initiated": False
+            })
+
+        else:
+            return jsonify({
+                "reply": "الرجاء الرد بكلمة نعم أو لا لتأكيد تفعيل الاتصال الطارئ.",
+                "clean_description": pending_message,
+                "report_type": pending_category,
+                "saved": False
+            })
+
+    # تحليل البلاغ الجديد
+    category = classify_problem(message)
+
     if category in emergency_types:
-        reply = (
-            f"فهمت من كلامك أن البلاغ يتعلق بـ {category}. "
-            f"هذا النوع يعتبر حالة طارئة. "
-            f"تم تجهيز وصف البلاغ، وأفضل خطوة الآن هي إرسال البلاغ فورًا أو استخدام التسجيل الصوتي للطوارئ."
-        )
-    elif category == "سرقة":
-        reply = (
-            "يبدو أن البلاغ يتعلق بحالة سرقة. "
-            "تم تجهيز وصف البلاغ، ويمكنك الآن إرساله ليتم تسجيله بشكل صحيح."
-        )
-    else:
-        reply = (
-            "فهمت تفاصيل البلاغ، لكنه لا يبدو طارئًا بشكل مباشر. "
-            "تم تجهيز وصف البلاغ ويمكنك إرساله كبلاغ عادي."
-        )
+        session["pending_emergency"] = True
+        session["pending_message"] = message
+        session["pending_category"] = category
 
-    saved = False
+        return jsonify({
+            "reply": f"يبدو أن البلاغ يتعلق بـ {category} وهي حالة طارئة. هل تريد تفعيل الاتصال الطارئ؟ اكتب نعم أو لا.",
+            "clean_description": message,
+            "report_type": category,
+            "saved": False
+        })
 
-    # إذا تبينين البوت يحفظ البلاغ النصي مباشرة
-    if user and message:
-        new_report = Report(
-            type=category if category else "عام",
-            description=message,
-            status="جديد",
-            user_id=user.id
-        )
-        db.session.add(new_report)
-        db.session.commit()
-        saved = True
-
-        reply += " تم تسجيل البلاغ بنجاح في النظام."
+    # إذا ليس طارئًا
+    new_report = Report(
+        type=category if category else "عام",
+        description=message,
+        status="جديد",
+        user_id=user.id
+    )
+    db.session.add(new_report)
+    db.session.commit()
 
     return jsonify({
-        "reply": reply,
+        "reply": "تم فهم البلاغ وتسجيله بنجاح كبلاغ عادي.",
         "clean_description": message,
         "report_type": category,
-        "saved": saved
+        "saved": True,
+        "call_initiated": False
     })
 
 # ------------------------------
