@@ -436,3 +436,64 @@ html[data-theme="dark"] .btn-back:hover{
 html[data-theme="dark"] .empty-box i{
     color:#4ade80 !important;
 }
+
+/* 🌙 Dark Mode - Call Details */
+
+body.dark .call-details-card {
+    background: #1e293b;
+    color: #e5e7eb;
+    box-shadow: 0 10px 25px -5px rgba(0,0,0,0.4);
+}
+
+body.dark .call-details-title {
+    color: #f1f5f9;
+    border-right: 4px solid #22c55e;
+}
+
+body.dark .call-details-title i {
+    color: #22c55e;
+}
+
+body.dark .info-item {
+    border-bottom: 1px solid #334155;
+}
+
+body.dark .info-label {
+    color: #cbd5f5;
+}
+
+body.dark .info-label i {
+    color: #22c55e;
+}
+
+body.dark .info-value {
+    background: #0f172a;
+    color: #e5e7eb;
+}
+
+/* النص الصوتي */
+body.dark .transcript-text {
+    background: #3f2a0d;
+    border-right: 3px solid #f59e0b;
+    color: #fde68a;
+}
+
+/* حالة التصنيف */
+body.dark .info-value span {
+    background: #14532d !important;
+    color: #bbf7d0;
+}
+
+/* رابط الخريطة */
+body.dark .map-link {
+    color: #60a5fa;
+}
+
+/* زر الرجوع */
+body.dark .back-btn {
+    background: #334155;
+}
+
+body.dark .back-btn:hover {
+    background: #1e293b;
+}
