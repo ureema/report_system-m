@@ -10,3 +10,4 @@ requests
 python-dotenv
 openai-whisper
 torch
+gunicorn
